@@ -489,6 +489,7 @@ export default Task.extend({
           'style-loader',
           'stylus-loader',
           'url-loader',
+          'license-webpack-plugin'
         ].forEach((packageName: string) => {
           packageJson['devDependencies'][packageName] = ourPackageJson['dependencies'][packageName];
         });
