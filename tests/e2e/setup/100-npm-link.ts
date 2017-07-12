@@ -1,5 +1,5 @@
 import {join} from 'path';
-import {npm, exec} from '../utils/process';
+import {silentNpm, npm, exec} from '../utils/process';
 import {updateJsonFile} from '../utils/project';
 import {getGlobalVariable} from '../utils/env';
 
