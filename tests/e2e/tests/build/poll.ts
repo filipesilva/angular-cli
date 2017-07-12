@@ -14,9 +14,9 @@ export default function() {
   // Polling time seems to be ignored and several builds are fired per second.
   // Debugging showed that webpack things the `src/` directory changed on each rebuild.
   // Disabling for now.
-  if (process.env['CIRCLECI']) {
-    return;
-  }
+  // if (process.env['CIRCLECI']) {
+  //   return;
+  // }
 
 
   return silentExecAndWaitForOutputToMatch('ng', ['serve', '--poll=10000'], webpackGoodRegEx)
