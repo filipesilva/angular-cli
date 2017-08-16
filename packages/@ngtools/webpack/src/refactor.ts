@@ -5,7 +5,7 @@ import { SourceMapConsumer, SourceMapGenerator } from 'source-map';
 
 const MagicString = require('magic-string');
 
-import { ProgramManager } from './program_manager';
+import { ProgramManager, ProgramManagerType } from './program_manager';
 
 export interface TranspileOutput {
   outputText: string;
@@ -237,12 +237,7 @@ export class TypeScriptFileRefactor {
     diagnostics = diagnostics.concat(program.getSyntacticDiagnostics(this._sourceFile),
       typeCheck ? program.getSemanticDiagnostics(this._sourceFile) : []);
 
-<<<<<<< HEAD
-  removeNodes(...nodes: Array<ts.Node | null>) {
-    nodes.forEach(node => node && this.removeNode(node));
-=======
     return diagnostics;
->>>>>>> refactor(@ngtools/webpack): use emit when available
   }
 
   /**
@@ -257,20 +252,7 @@ export class TypeScriptFileRefactor {
     };
 
     // Use program.emit() if we have a program, otherwise use ts.transpileModule().
-    if (this._programManager) {
-
-      // Custom writeFile to catch output from emit.
-      const writeFile = (fileName: string, data: string) => {
-        if (path.extname(fileName) === '.js') {
-          if (result.outputText !== undefined) {
-            // This really shouldn't happen, so error out if it does.
-            throw new Error(`Double JS emit for ${this._fileName}.`);
-          }
-          result.outputText = data;
-        } else if (path.extname(fileName) === '.map') {
-          result.sourceMapText = data;
-        }
-      };
+    if (this._programManager && this._programManager.type === ProgramManagerType.AngularCompiler) {
 
       if (this._changed) {
         // Write the refactored file back to the host and update the program.
@@ -279,16 +261,7 @@ export class TypeScriptFileRefactor {
         this._sourceFile = this._programManager.program.getSourceFile(this._fileName);
       }
 
-      const { emitSkipped } = this._programManager.program.emit(this._sourceFile, writeFile);
-
-      if (emitSkipped) {
-        throw new Error(`${this._fileName} emit failed.`);
-      }
-
-      if (result.outputText === undefined) {
-        // Something went wrong in reading the emitted file;
-        throw new Error(`Could not retrieve emitted TypeScript for ${this._fileName}.`);
-      }
+      result = this._programManager.emit(this._sourceFile);
     } else {
       result = ts.transpileModule(source, {
         compilerOptions: Object.assign({},

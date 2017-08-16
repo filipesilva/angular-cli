@@ -1,6 +1,7 @@
 import * as ts from 'typescript';
 import {basename, dirname, join} from 'path';
 import * as fs from 'fs';
+import {WebpackResourceLoader} from './resource_loader';
 
 
 export interface OnErrorFn {
@@ -104,7 +105,11 @@ export class WebpackCompilerHost implements ts.CompilerHost {
 
   private _cache = false;
 
-  constructor(private _options: ts.CompilerOptions, basePath: string) {
+  constructor(
+    private _options: ts.CompilerOptions,
+    basePath: string,
+    private _resourceLoader: WebpackResourceLoader
+  ) {
     this._setParentNodes = true;
     this._delegate = ts.createCompilerHost(this._options, this._setParentNodes);
     this._basePath = this._normalizePath(basePath);
@@ -179,7 +184,10 @@ export class WebpackCompilerHost implements ts.CompilerHost {
 
 
     const isWindows = process.platform.startsWith('win');
-    for (const fileName of this.getChangedFilePaths()) {
+    for (const fileName of this.getChangedFilePaths(false)) {
+      // if (!fileName.includes('node_modules')) {
+      //   console.log(fileName)
+      // }
       const stats = this._files[fileName];
       if (stats) {
         // If we're on windows, we need to populate with the proper path separator.
@@ -215,11 +223,11 @@ export class WebpackCompilerHost implements ts.CompilerHost {
     this._changedDirs = Object.create(null);
   }
 
-  getChangedFilePaths(tsOnly = true): string[] {
+  getChangedFilePaths(tsFilter = true): string[] {
     // Only get changed ts files by default.
     // That's what we mostly care about and want to transpile, but all kinds of files are on this
     // list, like package.json and .ngsummary.json files.
-    return Object.keys(this._changedFiles).filter(k => !tsOnly || k.endsWith('.ts'));
+    return Object.keys(this._changedFiles).filter(k => k.endsWith('.ts') === tsFilter);
   }
 
   invalidate(fileName: string): void {
@@ -308,6 +316,10 @@ export class WebpackCompilerHost implements ts.CompilerHost {
     return (fileName: string, data: string, _writeByteOrderMark: boolean,
             _onError?: (message: string) => void, _sourceFiles?: ts.SourceFile[]): void => {
       fileName = this._resolve(fileName);
+      // if (/app.module.ngfactory.js/.test(fileName)) {
+      //   console.log(fileName)
+      //   console.log(data)
+      // }
       this._setFileContent(fileName, data);
     };
   }
@@ -327,5 +339,9 @@ export class WebpackCompilerHost implements ts.CompilerHost {
 
   getNewLine(): string {
     return this._delegate.getNewLine();
+  }
+
+  readResource(fileName: string) {
+    return this._resourceLoader.get(fileName);
   }
 }

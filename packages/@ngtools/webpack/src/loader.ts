@@ -3,6 +3,7 @@ import * as ts from 'typescript';
 import {AotPlugin} from './plugin';
 import {TypeScriptFileRefactor} from './refactor';
 import {LoaderContext, ModuleReason} from './webpack';
+import {ProgramManagerType} from './program_manager';
 
 interface Platform {
   name: string;
@@ -264,7 +265,7 @@ function _getCaller(node: ts.Node): ts.CallExpression | null {
 }
 
 
-function _replaceEntryModule(plugin: AotPlugin, refactor: TypeScriptFileRefactor) {
+function _refactorBootstrap(plugin: AotPlugin, refactor: TypeScriptFileRefactor) {
   const modules = refactor.findAstNodes(refactor.sourceFile, ts.SyntaxKind.Identifier, true)
     .filter(identifier => identifier.getText() === plugin.entryModule.className)
     .filter(identifier =>
@@ -291,18 +292,6 @@ function _replaceEntryModule(plugin: AotPlugin, refactor: TypeScriptFileRefactor
     });
 }
 
-
-function _refactorBootstrap(plugin: AotPlugin, refactor: TypeScriptFileRefactor) {
-  const genDir = path.normalize(plugin.genDir);
-  const dirName = path.normalize(path.dirname(refactor.fileName));
-
-  // Bail if in the generated directory
-  if (dirName.startsWith(genDir)) {
-    return;
-  }
-
-  _replaceEntryModule(plugin, refactor);
-}
 
 export function removeModuleIdOnlyForTesting(refactor: TypeScriptFileRefactor) {
   _removeModuleId(refactor);
@@ -551,9 +540,13 @@ export function ngcLoader(this: LoaderContext & { _compilation: any }, source: s
     const refactor = new TypeScriptFileRefactor(
       sourceFileName, plugin.compilerHost, plugin.programManager, source);
 
-    Promise.resolve()
+    plugin.done
       .then(() => {
-        if (!plugin.skipCodeGeneration) {
+        if (plugin.programManager.type === ProgramManagerType.AngularCompiler) {
+          // TODO: figure out if all the other transforms are still needed (universal etc)
+          return Promise.resolve()
+            .then(() => _refactorBootstrap(plugin, refactor));
+        } else if (!plugin.skipCodeGeneration) {
           return Promise.resolve()
             .then(() => _removeDecorators(refactor))
             .then(() => _refactorBootstrap(plugin, refactor))
@@ -607,6 +600,11 @@ export function ngcLoader(this: LoaderContext & { _compilation: any }, source: s
         }
 
         const result = refactor.transpile();
+
+        if (plugin.programManager.type === ProgramManagerType.AngularCompiler) {
+          plugin.populateWebpackResolver();
+        }
+
         cb(null, result.outputText, result.sourceMap);
       })
       .catch(err => cb(err));

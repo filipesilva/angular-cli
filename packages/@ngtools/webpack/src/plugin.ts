@@ -13,7 +13,7 @@ import {resolveEntryModuleFromMain} from './entry_resolver';
 import {Tapable} from './webpack';
 import {PathsPlugin} from './paths-plugin';
 import {findLazyRoutes, LazyRouteMap} from './lazy_routes';
-import {ProgramManager} from './program_manager';
+import {ProgramManager, ProgramManagerType} from './program_manager';
 
 
 /**
@@ -32,11 +32,8 @@ export interface AotPluginOptions {
   i18nFile?: string;
   i18nFormat?: string;
   locale?: string;
-<<<<<<< HEAD
   missingTranslation?: string;
-=======
   sourceMap?: boolean;
->>>>>>> refactor(@ngtools/webpack): use emit when available
 
   // Use tsconfig to include path globs.
   exclude?: string | string[];
@@ -53,6 +50,7 @@ export class AotPlugin implements Tapable {
 
   private _compilerOptions: ts.CompilerOptions;
   private _angularCompilerOptions: any;
+  private _tsconfigFilenames: string[];
   private _programManager: ProgramManager;
   private _compilerHost: WebpackCompilerHost;
   private _resourceLoader: WebpackResourceLoader;
@@ -174,14 +172,19 @@ export class AotPlugin implements Tapable {
     const tsConfig = ts.parseJsonConfigFileContent(
       tsConfigJson, ts.sys, basePath, undefined, this._tsConfigPath);
 
-    let fileNames = tsConfig.fileNames;
+    this._tsconfigFilenames = tsConfig.fileNames;
+    this._compilerOptions = tsConfig.options;
 
-    // Check the genDir. We generate a default gendir that's under basepath; it will generate
+    // Overwrite outDir so we can find generated files next to their .ts origin in compilerHost.
+    this._compilerOptions.outDir = '';
+
+    // Check the genDir
+    // It's deprecated in Angular >=5 but still used for paths inside the Angular Compiler.
+    // For Angular < 5 We generate a default gendir that's under basepath; it will generate
     // a `node_modules` directory and because of that we don't want TypeScript resolution to
     // resolve to that directory but the real `node_modules`.
-    let genDir = path.join(basePath, '$$_gendir');
+    let genDir = VERSION.major >= 5 ? '' : path.join(basePath, '$$_gendir');
 
-    this._compilerOptions = tsConfig.options;
     this._angularCompilerOptions = Object.assign(
       { genDir },
       this._compilerOptions,
@@ -204,23 +207,6 @@ export class AotPlugin implements Tapable {
       this._skipCodeGeneration = options.skipCodeGeneration;
     }
 
-    this._compilerHost = new WebpackCompilerHost(this._compilerOptions, this._basePath);
-
-    // Override some files in the FileSystem.
-    if (options.hostOverrideFileSystem) {
-      for (const filePath of Object.keys(options.hostOverrideFileSystem)) {
-        this._compilerHost.writeFile(filePath, options.hostOverrideFileSystem[filePath], false);
-      }
-    }
-    // Override some files in the FileSystem with paths from the actual file system.
-    if (options.hostReplacementPaths) {
-      for (const filePath of Object.keys(options.hostReplacementPaths)) {
-        const replacementFilePath = options.hostReplacementPaths[filePath];
-        const content = this._compilerHost.readFile(replacementFilePath);
-        this._compilerHost.writeFile(filePath, content, false);
-      }
-    }
-
     // Force the right sourcemap options.
     if (options.sourceMap) {
       this._compilerOptions.sourceMap = true;
@@ -229,27 +215,6 @@ export class AotPlugin implements Tapable {
       this._compilerOptions.sourceRoot = basePath;
     } else {
       this._compilerOptions.sourceMap = false;
-    }
-
-    this._programManager = new ProgramManager(fileNames, this._compilerOptions, this._compilerHost);
-
-    // We enable caching of the filesystem in compilerHost _after_ the program has been created,
-    // because we don't want SourceFile instances to be cached past this point.
-    this._compilerHost.enableCaching();
-
-    if (options.entryModule) {
-      this._entryModule = options.entryModule;
-    } else if ((tsConfig.raw['angularCompilerOptions'] as any)
-            && (tsConfig.raw['angularCompilerOptions'] as any).entryModule) {
-      this._entryModule = path.resolve(this._basePath,
-        (tsConfig.raw['angularCompilerOptions'] as any).entryModule);
-    }
-
-    // still no _entryModule? => try to resolve from mainPath
-    if (!this._entryModule && options.mainPath) {
-      const mainPath = path.resolve(basePath, options.mainPath);
-      this._entryModule = resolveEntryModuleFromMain(
-        mainPath, this._compilerHost, this.programManager);
     }
 
     if (options.hasOwnProperty('i18nFile')) {
@@ -273,6 +238,60 @@ export class AotPlugin implements Tapable {
       }
       this._missingTranslation = options.missingTranslation;
     }
+  }
+
+  private _initializeProgram() {
+    // Create the compiler host.
+    this._compilerHost = new WebpackCompilerHost(
+      this._compilerOptions, this._basePath, this._resourceLoader
+    );
+
+    // Override some files in the FileSystem.
+    if (this._options.hostOverrideFileSystem) {
+      for (const filePath of Object.keys(this._options.hostOverrideFileSystem)) {
+        this._compilerHost.writeFile(filePath,
+          this._options.hostOverrideFileSystem[filePath], false);
+      }
+    }
+    // Override some files in the FileSystem with paths from the actual file system.
+    if (this._options.hostReplacementPaths) {
+      for (const filePath of Object.keys(this._options.hostReplacementPaths)) {
+        const replacementFilePath = this._options.hostReplacementPaths[filePath];
+        const content = this._compilerHost.readFile(replacementFilePath);
+        this._compilerHost.writeFile(filePath, content, false);
+      }
+    }
+
+    // Create program.
+    this._programManager = new ProgramManager(
+      this._tsconfigFilenames,
+      this._angularCompilerOptions,
+      this._compilerHost
+    );
+
+    console.log('# before init')
+
+    return this._programManager.initialize()
+      .then(() => {
+        console.log('# after init')
+        // We enable caching of the filesystem in compilerHost _after_ the program has been created,
+        // because we don't want SourceFile instances to be cached past this point.
+        this._compilerHost.enableCaching();
+
+        if (this._options.entryModule) {
+          this._entryModule = this._options.entryModule;
+        } else if (this._angularCompilerOptions.entryModule) {
+          this._entryModule = path.resolve(this._basePath,
+            this._angularCompilerOptions.entryModule);
+        }
+
+        // still no _entryModule? => try to resolve from mainPath
+        if (!this._entryModule && this._options.mainPath) {
+          const mainPath = path.resolve(this._basePath, this._options.mainPath);
+          this._entryModule = resolveEntryModuleFromMain(
+            mainPath, this._compilerHost, this.programManager);
+        }
+      });
   }
 
   private _findLazyRoutesInAst(): LazyRouteMap {
@@ -483,6 +502,14 @@ export class AotPlugin implements Tapable {
     }
   }
 
+  populateWebpackResolver() {
+    // Populate the file system cache with the virtual module.
+    this._compilerHost.populateWebpackResolver(this._compiler.resolvers.normal);
+    if (this._compilation.errors == 0) {
+      this._compilerHost.resetChangedFileTracker();
+    }
+  }
+
   private _make(compilation: any, cb: (err?: any, request?: any) => void) {
     this._compilation = compilation;
     if (this._compilation._ngToolsWebpackPluginInstance) {
@@ -491,11 +518,17 @@ export class AotPlugin implements Tapable {
 
     this._compilation._ngToolsWebpackPluginInstance = this;
 
+    // Create the resource loader with webpacks compilation.
     this._resourceLoader = new WebpackResourceLoader(compilation);
 
     this._donePromise = Promise.resolve()
+      .then(() => this._initializeProgram())
       .then(() => {
-        if (this._skipCodeGeneration) {
+        console.log('# in donePromise 1')
+        if (
+          this._skipCodeGeneration
+          || this._programManager.type === ProgramManagerType.AngularCompiler
+        ) {
           return;
         }
 
@@ -515,6 +548,7 @@ export class AotPlugin implements Tapable {
         });
       })
       .then(() => {
+        console.log('# in donePromise 2')
         // Get the changed files plus ngfactory that were created by the previous step, and
         // add them to the root file path (if those files exists).
         const newFiles = this._compilerHost.getChangedFilePaths();
@@ -525,11 +559,17 @@ export class AotPlugin implements Tapable {
         }
       })
       .then(() => {
+        console.log('# in donePromise 3')
         // Re-diagnose changed files.
         const changedFilePaths = this._compilerHost.getChangedFilePaths();
-        changedFilePaths.forEach(filePath => this.diagnose(filePath));
+        try {
+          changedFilePaths.forEach(filePath => this.diagnose(filePath));
+        } catch (e) {
+          console.log('# error', e)
+        }
       })
       .then(() => {
+        console.log('# in donePromise 4')
         if (this._typeCheck) {
           const diagnostics = this.program.getGlobalDiagnostics();
           if (diagnostics.length > 0) {
@@ -552,10 +592,7 @@ export class AotPlugin implements Tapable {
         }
       })
       .then(() => {
-        // Populate the file system cache with the virtual module.
-        this._compilerHost.populateWebpackResolver(this._compiler.resolvers.normal);
-      })
-      .then(() => {
+        console.log('# in donePromise 5')
         // We need to run the `listLazyRoutes` the first time because it also navigates libraries
         // and other things that we might miss using the findLazyRoutesInAst.
         this._discoveredLazyRoutes = this.firstRun
@@ -581,13 +618,11 @@ export class AotPlugin implements Tapable {
           });
       })
       .then(() => {
-        if (this._compilation.errors == 0) {
-          this._compilerHost.resetChangedFileTracker();
-        }
-
+        this.populateWebpackResolver();
+        console.log('# finished donePromise')
         cb();
       }, (err: any) => {
-        compilation.errors.push(err);
+        compilation.errors.push(err.stack);
         cb();
       });
   }
