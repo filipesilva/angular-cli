@@ -36,8 +36,6 @@ export default function() {
     })
     // Add a lazy module.
     .then(() => ng('generate', 'module', 'lazy', '--routing'))
-    // Just wait for the rebuild, otherwise we might be validating the last build.
-    .then(() => waitForAnyProcessOutputToMatch(validBundleRegEx, 10000))
     .then(() => writeFile('src/app/app.module.ts', `
       import { BrowserModule } from '@angular/platform-browser';
       import { NgModule } from '@angular/core';
