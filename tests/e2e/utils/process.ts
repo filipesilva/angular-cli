@@ -1,5 +1,6 @@
 import * as child_process from 'child_process';
 import {blue, yellow} from 'chalk';
+import {Subject, Observable} from 'rxjs';
 import {getGlobalVariable} from './env';
 import {rimraf} from './fs';
 import {wait} from './utils';
@@ -91,6 +92,11 @@ function _exec(options: ExecOptions, cmd: string, args: string[]): Promise<Proce
           resolve({ stdout, stderr });
         }
       });
+      childProcess.stderr.on('data', (data: Buffer) => {
+        if (data.toString().match(options.waitForMatch)) {
+          resolve({ stdout, stderr });
+        }
+      });
     }
   });
 }
@@ -117,6 +123,9 @@ export function waitForAnyProcessOutputToMatch(match: RegExp,
       });
       childProcess.stderr.on('data', (data: Buffer) => {
         stderr += data.toString();
+        if (data.toString().match(match)) {
+          resolve({ stdout, stderr });
+        }
       });
     }));
 
@@ -137,24 +146,39 @@ export function silentExec(cmd: string, ...args: string[]) {
 }
 
 export function execAndWaitForOutputToMatch(cmd: string, args: string[], match: RegExp) {
-  let maybeWait = Promise.resolve();
   if (cmd === 'ng' && args[0] === 'serve') {
-    // Webpack watcher can rebuild a few times due to files changes that happened just before the
-    // build (e.g. `git clean`), so we wait here.
-    maybeWait = wait(5000);
-  }
-  return maybeWait.then(() => _exec({ waitForMatch: match }, cmd, args));
-}
+    // Debounce on initial ng serve exec.
+    return new Promise((resolve) => {
+      const outputObservable = new Subject();
+      // Debounce for 3s.
+      // Useful because the Webpack watcher can rebuild a few times due to files changes that
+      // happened just before the build (e.g. `git clean`).
+      // This seems to be due to host file system differences, see
+      // https://nodejs.org/docs/latest/api/fs.html#fs_caveats
+      const debounceTime = 3000;
+      const debouncedOutput = outputObservable.debounce(() => Observable.interval(debounceTime));
+      debouncedOutput.subscribe((output) => resolve(output));
 
-export function silentExecAndWaitForOutputToMatch(cmd: string, args: string[], match: RegExp) {
-  let maybeWait = Promise.resolve();
-  if (cmd === 'ng' && args[0] === 'serve') {
-    // See execAndWaitForOutputToMatch for why the wait.
-    maybeWait = wait(5000);
-  }
-  return maybeWait.then(() => _exec({ silent: true, waitForMatch: match }, cmd, args));
-}
+      // Recursion helper for waitForAnyProcessOutputToMatch.
+      function waitHelper(): Promise<void> {
+        // Wait for 2.5s for output, then stop waiting.
+        return waitForAnyProcessOutputToMatch(match, debounceTime - 500)
+          .then((output) => {
+            outputObservable.next(output);
+            return waitHelper();
+          })
+          .catch(() => Promise.resolve());
+      }
 
+      _exec({ waitForMatch: match }, cmd, args).then((output) => {
+        outputObservable.next(output);
+        waitHelper();
+      });
+    });
+  } else {
+    return _exec({ waitForMatch: match }, cmd, args);
+  }
+}
 
 let npmInstalledEject = false;
 export function ng(...args: string[]) {
