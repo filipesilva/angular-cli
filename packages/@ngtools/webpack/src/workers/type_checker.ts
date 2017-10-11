@@ -2,9 +2,9 @@ import * as process from 'process';
 import * as ts from 'typescript';
 import * as chalk from 'chalk';
 
-import { WebpackCompilerHost } from './compiler_host';
-import { time, timeEnd } from './benchmark';
-import { CancellationToken, gatherDiagnostics } from './gather_diagnostics';
+import { WebpackCompilerHost } from '../compiler_host';
+import { time, timeEnd } from '../benchmark';
+import { CancellationToken, gatherDiagnostics } from '../gather_diagnostics';
 import {
   Program,
   CompilerOptions,
@@ -12,7 +12,7 @@ import {
   createProgram,
   createCompilerHost,
   formatDiagnostics,
-} from './ngtools_api';
+} from '../ngtools_api';
 
 // Force basic color support on terminals with no color support.
 // Chalk typings don't have the correct constructor parameters.

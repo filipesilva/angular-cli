@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import { fork, ChildProcess } from 'child_process';
+import { fork, ChildProcess, ForkOptions } from 'child_process';
 import * as path from 'path';
 import * as ts from 'typescript';
 
@@ -24,7 +24,7 @@ import {
   replaceResources,
 } from './transformers';
 import { time, timeEnd } from './benchmark';
-import { InitMessage, UpdateMessage } from './type_checker';
+import { InitMessage, UpdateMessage } from './workers/type_checker';
 import { gatherDiagnostics, hasErrors } from './gather_diagnostics';
 import {
   CompilerCliIsSupported,
@@ -103,7 +103,8 @@ export class AngularCompilerPlugin implements Tapable {
   private _compilation: any = null;
 
   // TypeChecker process.
-  private _forkTypeChecker = true;
+  private _multiProcess = true;
+  private _compilerProcess: ChildProcess;
   private _typeCheckerProcess: ChildProcess;
 
   constructor(options: AngularCompilerPluginOptions) {
@@ -321,7 +322,7 @@ export class AngularCompilerPlugin implements Tapable {
     });
 
     // Update the forked type checker.
-    if (this._forkTypeChecker && !this._firstRun) {
+    if (this._multiProcess && !this._firstRun) {
       this._updateForkedTypeChecker(changedTsFiles);
     }
 
@@ -443,19 +444,53 @@ export class AngularCompilerPlugin implements Tapable {
       });
   }
 
-  private _createForkedTypeChecker() {
-    // Bootstrap type checker is using local CLI.
+  private _createChildProcesses() {
+    // Bootstrap workers if using local CLI.
     const g: any = global;
-    const typeCheckerFile: string = g['angularCliIsLocal']
-      ? './type_checker_bootstrap.js'
-      : './type_checker.js';
+    const bootstrap = g['angularCliIsLocal'] ? '_bootstrap' : '';
 
-    this._typeCheckerProcess = fork(path.resolve(__dirname, typeCheckerFile));
+    // Fix debug port for child processes.
+    // Workaround for https://github.com/nodejs/node/issues/9435
+
+    // TODO: get port from process.argv, increment for child processes.
+    // TODO: use memory limit from parent if present.
+    // TODO: determine the best number here, maybe too big will delay garbace collection.
+    const options: ForkOptions = {
+      execArgv: process.argv.concat(['--max-old-space-size=8192'])
+    };
+
+    // Fork and initialize compiler.
+    const compilerWorkerPath = path.resolve(__dirname, `./workers/compiler${bootstrap}.js`);
+    this._compilerProcess = fork(compilerWorkerPath, [], options);
+    this._compilerProcess.send(new InitMessage(this._compilerOptions, this._basePath,
+      this._JitMode, this._tsFilenames));
+
+    // Fork and initialize type checker.
+    const typeCheckerWorkerPath = path.resolve(__dirname, `./workers/compiler${bootstrap}.js`);
+    this._typeCheckerProcess = fork(typeCheckerWorkerPath, [], options);
     this._typeCheckerProcess.send(new InitMessage(this._compilerOptions, this._basePath,
       this._JitMode, this._tsFilenames));
 
-    // Cleanup.
+    // Child process error handling.
+    // TODO: allow recovering from some of these errors.
+    let exiting = false;
+    const childProcessErrorHandler = () => {
+      console.log('Child process exited unexpectedly, exiting main process.');
+      killTypeCheckerProcess();
+    }
+    this._compilerProcess.on('close', childProcessErrorHandler);
+    this._compilerProcess.on('disconnect', childProcessErrorHandler);
+    this._compilerProcess.on('error', childProcessErrorHandler);
+    this._compilerProcess.on('exit', childProcessErrorHandler);
+    this._typeCheckerProcess.on('close', childProcessErrorHandler);
+    this._typeCheckerProcess.on('disconnect', childProcessErrorHandler);
+    this._typeCheckerProcess.on('error', childProcessErrorHandler);
+    this._typeCheckerProcess.on('exit', childProcessErrorHandler);
+
+    // Cleanup child processes when main process exits.
     const killTypeCheckerProcess = () => {
+      exiting = true;
+      treeKill(this._compilerProcess.pid, 'SIGTERM');
       treeKill(this._typeCheckerProcess.pid, 'SIGTERM');
       process.exit();
     };
@@ -591,8 +626,8 @@ export class AngularCompilerPlugin implements Tapable {
     this._donePromise = Promise.resolve()
       .then(() => {
         // Create a new process for the type checker.
-        if (this._forkTypeChecker && !this._firstRun && !this._typeCheckerProcess) {
-          this._createForkedTypeChecker();
+        if (this._multiProcess && !this._firstRun && !this._typeCheckerProcess) {
+          this._createChildProcesses();
         }
       })
       .then(() => {
@@ -798,7 +833,7 @@ export class AngularCompilerPlugin implements Tapable {
           timeEnd('AngularCompilerPlugin._emit.ts.getOptionsDiagnostics');
         }
 
-        if (this._firstRun || !this._forkTypeChecker) {
+        if (this._firstRun || !this._multiProcess) {
           allDiagnostics.push(...gatherDiagnostics(this._program, this._JitMode,
             'AngularCompilerPlugin._emit.ts'));
         }
@@ -831,7 +866,7 @@ export class AngularCompilerPlugin implements Tapable {
           timeEnd('AngularCompilerPlugin._emit.ng.getNgOptionDiagnostics');
         }
 
-        if (this._firstRun || !this._forkTypeChecker) {
+        if (this._firstRun || !this._multiProcess) {
           allDiagnostics.push(...gatherDiagnostics(this._program, this._JitMode,
             'AngularCompilerPlugin._emit.ng'));
         }
