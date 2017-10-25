@@ -86,15 +86,16 @@ export function replaceBootstrap(
     // Add the transform operations.
     const factoryClassName = entryModule.className + 'NgFactory';
     const factoryModulePath = modulePath + '.ngfactory';
+    const factoryId = ts.createIdentifier(factoryClassName);
+    const platformBrowserId = ts.createIdentifier('platformBrowser');
+
     ops.push(
       // Replace the entry module import.
-      ...insertImport(sourceFile, factoryClassName, factoryModulePath),
-      new ReplaceNodeOperation(sourceFile, entryModuleIdentifier,
-        ts.createIdentifier(factoryClassName)),
+      ...insertImport(sourceFile, factoryId, factoryModulePath),
+      new ReplaceNodeOperation(sourceFile, entryModuleIdentifier, factoryId),
       // Replace the platformBrowserDynamic import.
-      ...insertImport(sourceFile, 'platformBrowser', '@angular/platform-browser'),
-      new ReplaceNodeOperation(sourceFile, platformBrowserDynamicIdentifier,
-        ts.createIdentifier('platformBrowser')),
+      ...insertImport(sourceFile, platformBrowserId, '@angular/platform-browser'),
+      new ReplaceNodeOperation(sourceFile, platformBrowserDynamicIdentifier, platformBrowserId),
       new ReplaceNodeOperation(sourceFile, bootstrapModuleIdentifier,
         ts.createIdentifier('bootstrapModuleFactory')),
     );

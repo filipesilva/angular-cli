@@ -6,7 +6,7 @@ import { AddNodeOperation, TransformOperation } from './make_transform';
 
 export function insertImport(
   sourceFile: ts.SourceFile,
-  symbolName: string,
+  symbol: ts.Identifier,
   modulePath: string
 ): TransformOperation[] {
   const ops: TransformOperation[] = [];
@@ -36,7 +36,7 @@ export function insertImport(
     // Find if it's in either imports. If so, just return; nothing to do.
     const hasImportAlready = maybeImports.some((node: ts.NamedImports) => {
       return node.elements.some((element: ts.ImportSpecifier) => {
-        return element.name.text == symbolName;
+        return element.name.text == symbol.text;
       });
     });
     if (hasImportAlready) {
@@ -48,12 +48,11 @@ export function insertImport(
       sourceFile,
       maybeImports[0].elements[maybeImports[0].elements.length - 1],
       undefined,
-      ts.createImportSpecifier(undefined, ts.createIdentifier(symbolName))
+      ts.createImportSpecifier(undefined, symbol)
     ));
   } else {
     // Create the new import node.
-    const namedImports = ts.createNamedImports([ts.createImportSpecifier(undefined,
-      ts.createIdentifier(symbolName))]);
+    const namedImports = ts.createNamedImports([ts.createImportSpecifier(undefined, symbol)]);
     const importClause = ts.createImportClause(undefined, namedImports);
     const newImport = ts.createImportDeclaration(undefined, undefined, importClause,
       ts.createLiteral(modulePath));
