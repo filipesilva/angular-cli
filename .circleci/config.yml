@@ -4,11 +4,13 @@ version: 2
 anchor_1: &defaults
   working_directory: ~/angular-cli
   docker:
-    - image: angular/ngcontainer:0.0.5
+    - image: angular/ngcontainer:0.0.7
 
 # Restore cache based on package-lock.json checksum for branch.
+# It's not really possible to clear cache on CircleCI 2.0 so we have to version it
+# https://discuss.circleci.com/t/clearing-of-the-cache-through-the-api-doesnt-work/12550/8
 anchor_2: &restore_cache_defaults
-    key: angular-cli-{{ checksum "package-lock.json" }}
+    key: angular-cli-{{ checksum "package-lock.json" }}-v0.2
 
 # Attach workspace that contains:
 # - dist/ : built cli
@@ -28,7 +30,7 @@ jobs:
       - run: npm install --no-save
       - run: npm run build
       - save_cache:
-          key: angular-cli-{{ checksum "package-lock.json" }}
+          key: angular-cli-{{ checksum "package-lock.json" }}-v0.2
           paths:
             - "node_modules"
 
