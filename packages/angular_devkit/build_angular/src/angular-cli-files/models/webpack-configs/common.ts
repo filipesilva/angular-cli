@@ -9,6 +9,7 @@ import * as CopyWebpackPlugin from 'copy-webpack-plugin';
 import * as path from 'path';
 import { HashedModuleIdsPlugin, debug } from 'webpack';
 import { AssetPatternObject } from '../../../browser/schema';
+import { AngularCompilerDependencyPlugin } from '../../plugins/angular-compiler-dependency-plugin';
 import { BundleBudgetPlugin } from '../../plugins/bundle-budget';
 import { CleanCssWebpackPlugin } from '../../plugins/cleancss-webpack-plugin';
 import { ScriptsWebpackPlugin } from '../../plugins/scripts-webpack-plugin';
@@ -41,6 +42,8 @@ export function getCommonConfig(wco: WebpackConfigOptions) {
 
   // tslint:disable-next-line:no-any
   const extraPlugins: any[] = [];
+  // tslint:disable-next-line:no-any
+  const extraOptimizationPlugins: any[] = [];
   const entryPoints: { [key: string]: string[] } = {};
 
   if (buildOptions.main) {
@@ -233,9 +236,19 @@ export function getCommonConfig(wco: WebpackConfigOptions) {
     ...(buildOptions.platform == 'server' ? { mangle: false } : {}),
   };
 
+  const externals: {[k: string]: string} = {};
+
+  if (buildOptions.optimization && buildOptions.aot && buildOptions.buildOptimizer &&
+    buildOptions.removeAngularCompiler) {
+    externals['@angular/compiler'] = `'The Angular Compiler was removed by Angular CLI. `
+      + `Use the removeAngularCompiler build flag to retain it if needed.'`;
+    extraOptimizationPlugins.push(new AngularCompilerDependencyPlugin());
+  }
+
   return {
     mode: buildOptions.optimization ? 'production' : 'development',
     devtool: false,
+    externals,
     resolve: {
       extensions: ['.ts', '.tsx', '.mjs', '.js'],
       symlinks: !buildOptions.preserveSymlinks,
@@ -307,6 +320,7 @@ export function getCommonConfig(wco: WebpackConfigOptions) {
           cache: true,
           terserOptions,
         }),
+        ...extraOptimizationPlugins,
       ],
     },
     plugins: extraPlugins,

@@ -227,6 +227,12 @@ export interface BrowserBuilderSchema {
    * Output profile events for Chrome profiler.
    */
   profile: boolean;
+
+  /**
+   * (EXPERIMENTAL) Remove the @angular/compiler package. Only has effect when the 'optimization',
+   * 'aot' and 'buildOptimizer' options are set to 'true'.
+   */
+  removeAngularCompiler: boolean;
 }
 
 export type AssetPattern = string | AssetPatternObject;

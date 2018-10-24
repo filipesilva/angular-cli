@@ -53,6 +53,7 @@ export interface BuildOptions {
   statsJson: boolean;
   forkTypeChecker: boolean;
   profile?: boolean;
+  removeAngularCompiler?: boolean;
 
   main: string;
   index: string;

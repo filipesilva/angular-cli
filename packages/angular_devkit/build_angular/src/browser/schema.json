@@ -242,6 +242,11 @@
       "type": "boolean",
       "description": "Output profile events for Chrome profiler.",
       "default": false
+    },
+    "removeAngularCompiler": {
+      "type": "boolean",
+      "description": "(EXPERIMENTAL) Remove the @angular/compiler package. Only has effect when the 'optimization', 'aot' and 'buildOptimizer' options are set to 'true'.",
+      "default": true
     }
   },
   "additionalProperties": false,
