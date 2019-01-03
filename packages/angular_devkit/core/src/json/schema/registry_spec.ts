@@ -13,7 +13,7 @@ import { addUndefinedDefaults } from './transforms';
 
 
 describe('CoreSchemaRegistry', () => {
-  it('works asynchronously', done => {
+  xit('works asynchronously', done => {
     const registry = new CoreSchemaRegistry();
     registry.addPostTransform(addUndefinedDefaults);
     const data: any = {};  // tslint:disable-line:no-any
