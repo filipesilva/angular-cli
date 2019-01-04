@@ -1,5 +1,5 @@
 import { createProjectFromAsset } from '../../utils/assets';
-import { ng, silentNpm } from '../../utils/process';
+import { ng, silentNpm, npm } from '../../utils/process';
 import { useBuiltPackages, useCIChrome, useCIDefaults } from '../../utils/project';
 import { expectToFail } from '../../utils/utils';
 
@@ -11,7 +11,7 @@ export default function () {
     .then(() => expectToFail(() => ng('build')))
     .then(() => ng('update', '@angular/cli'))
     .then(() => useBuiltPackages())
-    .then(() => silentNpm('install'))
+    .then(() => npm('install'))
     .then(() => useCIDefaults('one-oh-project'))
     .then(() => ng('generate', 'component', 'my-comp'))
     .then(() => ng('test', '--watch=false'))
