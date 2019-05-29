@@ -47,8 +47,11 @@ anchor_3: &restore_cache
 anchor_4: &attach_options
   at: .
 
+orbs:
+  win: sandbox/windows-tools@dev:preview
+
 # Job definitions
-version: 2
+version: 2.1
 jobs:
   install:
     <<: *defaults
@@ -115,6 +118,12 @@ jobs:
       - store_artifacts:
           path: /tmp/dist
           destination: cli/new-production
+
+  e2e-cli-win:
+    executor: win/preview-default
+    steps:
+      - checkout
+      - run: echo 'Hello, Windows'          
 
   e2e-cli-node-12:
     <<: *defaults
