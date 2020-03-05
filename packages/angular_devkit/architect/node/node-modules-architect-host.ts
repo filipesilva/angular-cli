@@ -143,7 +143,8 @@ export class WorkspaceNodeModulesArchitectHost implements ArchitectHost<NodeModu
   }
 
   async loadBuilder(info: NodeModulesBuilderInfo): Promise<Builder> {
-    const builder = (await import(info.import)).default;
+    const f1 = info.import;
+    const builder = (await import(f1)).default;
     if (builder[BuilderSymbol]) {
       return builder;
     }
