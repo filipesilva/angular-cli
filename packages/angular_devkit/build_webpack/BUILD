@@ -1,0 +1,102 @@
+# Copyright Google Inc. All Rights Reserved.
+#
+# Use of this source code is governed by an MIT-style license that can be
+# found in the LICENSE file at https://angular.io/license
+
+licenses(["notice"])  # MIT
+
+load("@npm_bazel_jasmine//:index.bzl", "jasmine_node_test")
+load("@npm_bazel_typescript//:index.bzl", "ts_library")
+load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
+load("//tools:ts_json_schema.bzl", "ts_json_schema")
+
+package(default_visibility = ["//visibility:public"])
+
+ts_json_schema(
+    name = "webpack_schema",
+    src = "src/webpack/schema.json",
+)
+
+ts_json_schema(
+    name = "webpack_dev_server_schema",
+    src = "src/webpack-dev-server/schema.json",
+)
+
+ts_library(
+    name = "build_webpack",
+    srcs = glob(
+        include = ["src/**/*.ts"],
+        exclude = [
+            "src/test-utils.ts",
+            "src/**/*_spec.ts",
+        ],
+    ),
+    data = glob(
+        include = [
+          "package.json",
+          "builders.json",
+          "src/webpack/schema.json",
+          "src/webpack-dev-server/schema.json",
+        ],
+    ),
+    module_name = "@angular-devkit/build-webpack",
+    module_root = "src/index.d.ts",    
+    deps = [
+        ":webpack_schema",
+        ":webpack_dev_server_schema",
+        "//packages/angular_devkit/architect",
+        "//packages/angular_devkit/core",      
+        "@npm//@types/node",
+        "@npm//@types/webpack",
+        "@npm//@types/webpack-dev-server",
+        "@npm//rxjs",
+        "@npm//webpack",
+        "@npm//webpack-dev-server",
+    ],
+)
+
+ts_library(
+    name = "build_webpack_test_lib",
+    testonly = True,
+    srcs = glob(
+        include = [
+            "src/test-utils.ts",
+            "src/**/*_spec.ts",
+            "src/**/*_spec_large.ts",
+        ],
+    ),
+    data = glob(
+        include = [
+          "test/**/*",
+        ],
+    ),
+    tsconfig = "//:tsconfig-test.json",
+    deps = [
+        ":build_webpack",
+        "//packages/angular_devkit/core",
+        "//packages/angular_devkit/core:node",
+        "//packages/angular_devkit/architect",
+        "//packages/angular_devkit/architect:node",
+        "//packages/angular_devkit/architect:testing",
+        "@npm//@types/jasmine",
+        "@npm//@types/node",
+        "@npm//@types/node-fetch",
+        "@npm//node-fetch",
+    ],
+)
+
+jasmine_node_test(
+    name = "build_webpack_test",
+    srcs = [":build_webpack_test_lib"],
+    deps = [
+        "@npm//jasmine",
+        "@npm//source-map",
+    ],
+)
+
+pkg_npm(
+    name = "npm_package",
+    deps = [
+        ":build_webpack",
+    ],
+)

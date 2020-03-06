@@ -13,8 +13,6 @@ import { NodeJsSyncHost } from '@angular-devkit/core/node';
 import * as path from 'path';
 import { BuildResult } from './index';
 
-const devkitRoot = (global as any)._DevKitRoot; // tslint:disable-line:no-any
-
 
 describe('Webpack Builder basic test', () => {
   let testArchitectHost: TestingArchitectHost;
@@ -38,7 +36,8 @@ describe('Webpack Builder basic test', () => {
   }
 
   describe('basic app', () => {
-    const workspaceRoot = path.join(devkitRoot, 'tests/angular_devkit/build_webpack/basic-app/');
+    const ngJsonPath = path.join(path.dirname(__filename), '../../test/basic-app/angular.json');
+    const workspaceRoot = path.dirname(require.resolve(ngJsonPath));
     const outputPath = join(normalize(workspaceRoot), 'dist');
 
     beforeEach(async () => {
@@ -66,38 +65,6 @@ describe('Webpack Builder basic test', () => {
         file: 'bundle.js',
         extension: '.js',
       });
-
-      await run.stop();
-    });
-  });
-
-  describe('Angular app', () => {
-    const workspaceRoot = path.join(devkitRoot, 'tests/angular_devkit/build_webpack/angular-app/');
-    const outputPath = join(normalize(workspaceRoot), 'dist/');
-
-    beforeEach(async () => {
-      await createArchitect(workspaceRoot);
-    });
-
-    it('works', async () => {
-      const run = await architect.scheduleTarget({ project: 'app', target: 'build-webpack' });
-      const output = await run.result;
-
-      expect(output.success).toBe(true);
-      expect(await vfHost.exists(join(outputPath, 'main.js')).toPromise()).toBe(true);
-      expect(await vfHost.exists(join(outputPath, 'polyfills.js')).toPromise()).toBe(true);
-      await run.stop();
-    });
-
-    it('works and returns emitted files', async () => {
-      const run = await architect.scheduleTarget({ project: 'app', target: 'build-webpack' });
-      const output = await run.result as BuildResult;
-
-      expect(output.success).toBe(true);
-      expect(output.emittedFiles).toContain(
-        { id: 'main', name: 'main', initial: true, file: 'main.js', extension: '.js' },
-        { id: 'polyfills', name: 'polyfills', initial: true, file: 'polyfills.js', extension: '.js' },
-      );
 
       await run.stop();
     });
