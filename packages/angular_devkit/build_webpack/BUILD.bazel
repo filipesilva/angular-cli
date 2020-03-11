@@ -30,7 +30,10 @@ ts_library(
             "src/test-utils.ts",
             "src/**/*_spec.ts",
         ],
-    ),
+    ) + [
+      "//packages/angular_devkit/build_webpack:src/webpack/schema.ts",
+      "//packages/angular_devkit/build_webpack:src/webpack-dev-server/schema.ts",
+    ],
     data = glob(
         include = [
           "package.json",
@@ -42,8 +45,6 @@ ts_library(
     module_name = "@angular-devkit/build-webpack",
     module_root = "src/index.d.ts",    
     deps = [
-        ":webpack_schema",
-        ":webpack_dev_server_schema",
         "//packages/angular_devkit/architect",
         "//packages/angular_devkit/core",      
         "@npm//@types/node",
