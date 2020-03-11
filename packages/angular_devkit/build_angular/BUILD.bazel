@@ -1,0 +1,189 @@
+# Copyright Google Inc. All Rights Reserved.
+#
+# Use of this source code is governed by an MIT-style license that can be
+# found in the LICENSE file at https://angular.io/license
+
+licenses(["notice"])  # MIT
+
+load("@bazel_tools//tools/build_defs/pkg:pkg.bzl", "pkg_tar")
+load("@npm_bazel_typescript//:index.bzl", "ts_library")
+load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
+load("//tools:ts_json_schema.bzl", "ts_json_schema")
+
+package(default_visibility = ["//visibility:public"])
+
+
+ts_json_schema(
+    name = "app_shell_schema",
+    src = "src/app-shell/schema.json",
+)
+
+ts_json_schema(
+    name = "browser_schema",
+    src = "src/browser/schema.json",
+)
+
+ts_json_schema(
+    name = "dev_server_schema",
+    src = "src/dev-server/schema.json",
+)
+
+ts_json_schema(
+    name = "extract_i18n_schema",
+    src = "src/extract-i18n/schema.json",
+)
+
+ts_json_schema(
+    name = "karma_schema",
+    src = "src/karma/schema.json",
+)
+
+ts_json_schema(
+    name = "protractor_schema",
+    src = "src/protractor/schema.json",
+)
+
+ts_json_schema(
+    name = "server_schema",
+    src = "src/server/schema.json",
+)
+
+ts_json_schema(
+    name = "tslint_schema",
+    src = "src/tslint/schema.json",
+)
+
+ts_library(
+    name = "build_angular",
+    srcs = glob(
+        include = [
+          "src/**/*.ts",
+          "plugins/**/*.ts",
+        ],
+        exclude = [
+            "src/**/*_spec.ts",
+            "plugins/**/*_spec.ts",
+        ],
+    ) + [
+      "//packages/angular_devkit/build_angular:src/app-shell/schema.ts",
+      "//packages/angular_devkit/build_angular:src/browser/schema.ts",
+      "//packages/angular_devkit/build_angular:src/dev-server/schema.ts",
+      "//packages/angular_devkit/build_angular:src/extract-i18n/schema.ts",
+      "//packages/angular_devkit/build_angular:src/karma/schema.ts",
+      "//packages/angular_devkit/build_angular:src/protractor/schema.ts",
+      "//packages/angular_devkit/build_angular:src/server/schema.ts",
+      "//packages/angular_devkit/build_angular:src/tslint/schema.ts",
+    ],
+    data = glob(
+        include = [
+          "package.json",
+          "builders.json",
+          "src/**/schema.json",
+          "src/**/*.js",
+          "src/**/*.html",
+        ],
+    ),
+    module_name = "@angular-devkit/build-angular",
+    module_root = "src/index.d.ts",    
+    deps = [
+        "//packages/angular_devkit/core",
+        "//packages/angular_devkit/core/node",
+        "//packages/angular_devkit/architect",
+        "//packages/angular_devkit/build_optimizer",
+        "//packages/angular_devkit/build_webpack",
+        "//packages/ngtools/webpack",
+        "@npm//@types/node",
+        "@npm//@types/babel__core",
+        "@npm//@types/babel__template",
+        "@npm//@types/browserslist",
+        "@npm//@types/caniuse-lite",
+        "@npm//@types/copy-webpack-plugin",
+        "@npm//@types/cssnano",
+        "@npm//@types/find-cache-dir",
+        "@npm//@types/glob",
+        "@npm//@types/loader-utils",
+        "@npm//@types/minimatch",
+        "@npm//@types/rimraf",
+        "@npm//@types/semver",
+        "@npm//@types/webpack",
+        "@npm//@types/webpack-dev-server",
+        "@npm//@types/webpack-sources",
+        "@npm//@babel/core",
+        "@npm//@babel/preset-env",
+        "@npm//@babel/template",
+        "@npm//ajv",
+        "@npm//autoprefixer",
+        "@npm//babel-loader",
+        "@npm//browserslist",
+        "@npm//cacache",
+        "@npm//caniuse-lite",
+        "@npm//cssnano",
+        "@npm//circular-dependency-plugin",
+        "@npm//coverage-istanbul-loader",
+        "@npm//copy-webpack-plugin",
+        "@npm//core-js",
+        "@npm//file-loader",
+        "@npm//find-cache-dir",
+        "@npm//glob",
+        "@npm//jest-worker",
+        "@npm//karma-source-map-support",
+        "@npm//less",
+        "@npm//less-loader",
+        "@npm//license-webpack-plugin",
+        "@npm//loader-utils",
+        "@npm//mini-css-extract-plugin",
+        "@npm//minimatch",
+        "@npm//parse5",
+        "@npm//open",
+        "@npm//postcss",
+        "@npm//postcss-import",
+        "@npm//postcss-loader",
+        "@npm//raw-loader",
+        "@npm//regenerator-runtime",
+        "@npm//rimraf",
+        "@npm//rollup",
+        "@npm//rxjs",
+        "@npm//sass",
+        "@npm//sass-loader",
+        "@npm//semver",
+        "@npm//source-map",
+        "@npm//source-map-support",
+        "@npm//source-map-loader",
+        "@npm//speed-measure-webpack-plugin",
+        "@npm//style-loader",
+        "@npm//stylus",
+        "@npm//stylus-loader",
+        "@npm//tree-kill",
+        "@npm//terser",
+        "@npm//terser-webpack-plugin",
+        "@npm//webpack",
+        "@npm//webpack-dev-middleware",
+        "@npm//webpack-dev-server",
+        "@npm//webpack-merge",
+        "@npm//webpack-sources",
+        "@npm//webpack-subresource-integrity",
+        "@npm//worker-plugin",
+        "@npm//typescript",
+        "@npm//@angular/compiler-cli",
+        "@npm//@angular/localize",
+        "@npm//@angular/service-worker",
+        "@npm//karma",
+        "@npm//tslint",
+        "@npm//@types/karma",
+    ],
+)
+
+pkg_npm(
+    name = "npm_package",
+    deps = [
+        ":build_angular",
+    ],
+)
+
+pkg_tar(
+    name = "npm_package_archive",
+    srcs = [":npm_package"],
+    extension = "tar.gz",
+    strip_prefix = "./npm_package",
+    tags = ["manual"],
+)
