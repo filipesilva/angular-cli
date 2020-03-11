@@ -76,10 +76,10 @@ ts_library(
     deps = [
         ":build_webpack",
         "//packages/angular_devkit/core",
-        "//packages/angular_devkit/core:node",
+        "//packages/angular_devkit/core/node",
         "//packages/angular_devkit/architect",
-        "//packages/angular_devkit/architect:node",
-        "//packages/angular_devkit/architect:testing",
+        "//packages/angular_devkit/architect/node",
+        "//packages/angular_devkit/architect/testing",
         "@npm//@types/jasmine",
         "@npm//@types/node",
         "@npm//@types/node-fetch",
