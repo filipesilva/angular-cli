@@ -63,6 +63,7 @@
     "tests/**/*",
     "tools/**/*",
     "benchmark/**/*",
-    "etc/api/**/*"
+    "etc/api/**/*",
+    "integration/**"
   ]
 }
