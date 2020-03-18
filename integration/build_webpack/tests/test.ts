@@ -12,6 +12,7 @@ import { BuildResult } from '@angular-devkit/build-webpack';
 import { join, normalize, schema, workspaces } from '@angular-devkit/core';
 import { NodeJsSyncHost } from '@angular-devkit/core/node';
 import 'jasmine';
+import * as path from 'path';
 
 // Default timeout for large specs is 2.5 minutes.
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 150000;
@@ -33,22 +34,12 @@ describe('Webpack Builder basic test', () => {
     );
 
     testArchitectHost = new TestingArchitectHost(workspaceRoot, workspaceRoot,
-      // TODO: shouldn't need to be any, but getting this error:
-      /*
-test.ts:37:7 - error TS2345: Argument of type 'WorkspaceNodeModulesArchitectHost' is not assignable to parameter of type 'ArchitectHost<BuilderInfo>'.
-  The types returned by 'loadBuilder(...)' are incompatible between these types.
-    Type 'Promise<Builder<JsonObject>>' is not assignable to type 'Promise<Builder<JsonObject> | null>'.
-      Type 'Builder<JsonObject>' is missing the following properties from type 'Builder<JsonObject>': [BuilderSymbol], [BuilderVersionSymbol]
-
-37       new WorkspaceNodeModulesArchitectHost(workspace, workspaceRoot));
-
-       */
-      new WorkspaceNodeModulesArchitectHost(workspace, workspaceRoot) as any);
+      new WorkspaceNodeModulesArchitectHost(workspace, workspaceRoot));
     architect = new Architect(testArchitectHost, registry);
   }
 
   describe('Angular app', () => {
-    const workspaceRoot = __dirname;
+    const workspaceRoot = path.join(__dirname, '../');
     const outputPath = join(normalize(workspaceRoot), 'dist/');
 
     beforeEach(async () => {

@@ -32,7 +32,7 @@ npm_integration_test(
       "mkdir .yarn_local_cache",
       "patch-package-json",
       "$(rootpath @nodejs//:yarn_bin) install --cache-folder ./.yarn_local_cache",
-      "$(rootpath @nodejs//:yarn_bin) test",
+      "$(rootpath @nodejs//:yarn_bin) --cache-folder ./.yarn_local_cache test",
       "rm -rf ./.yarn_local_cache",
     ],
     data = [

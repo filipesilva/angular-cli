@@ -41,3 +41,6 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+tests-tsc-out
+NPM_PACKAGE_MANIFEST.json
