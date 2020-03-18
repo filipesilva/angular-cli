@@ -4,11 +4,22 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "ts-node node_modules/jasmine/bin/jasmine \"tests/**/*_spec_large.ts\"",
+    "test": "ts-node node_modules/jasmine/bin/jasmine",
+    "pretest-app-shell": "yarn webdriver-update",
+    "test-app-shell": "yarn test \"tests/app-shell/**/*_spec_large.ts\"",
+    "test-browser-1": "yarn test \"tests/browser-1/**/*_spec_large.ts\"",
+    "test-browser-2": "yarn test \"tests/browser-2/**/*_spec_large.ts\"",
+    "test-browser-3": "yarn test \"tests/browser-3/**/*_spec_large.ts\"",
+    "test-browser-4": "yarn test \"tests/browser-4/**/*_spec_large.ts\"",
+    "test-dev-server": "yarn test \"tests/dev-server/**/*_spec_large.ts\"",
+    "test-extract-i18n": "yarn test \"tests/extract-i18n/**/*_spec_large.ts\"",
+    "test-karma": "yarn test \"tests/karma/**/*_spec_large.ts\"",
+    "pretest-protractor": "yarn webdriver-update",
+    "test-protractor": "yarn test \"tests/protractor/**/*_spec_large.ts\"",
+    "test-server": "yarn test \"tests/server/**/*_spec_large.ts\"",
+    "test-tslint": "yarn test \"tests/tslint/**/*_spec_large.ts\"",
     "//webdriver-update-README": "ChromeDriver version must match Puppeteer Chromium version, see https://github.com/GoogleChrome/puppeteer/releases http://chromedriver.chromium.org/downloads",
-    "webdriver-update": "webdriver-manager update --standalone false --gecko false --versions.chrome 79.0.3945.16",
-    "ngcc": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
-    "postinstall": "yarn webdriver-update && yarn ngcc"
+    "webdriver-update": "webdriver-manager update --standalone false --gecko false --versions.chrome 79.0.3945.16"
   },
   "dependencies": {
     "@angular-devkit/architect": "^0.900.5",
