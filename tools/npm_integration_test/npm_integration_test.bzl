@@ -145,6 +145,7 @@ def npm_integration_test(name, **kwargs):
     npm_packages = kwargs.pop("npm_packages", {})
     test_files = kwargs.pop("test_files", [])
     data = kwargs.pop("data", [])
+    debug = kwargs.pop("debug", False)
 
     _npm_integration_test_config(
         name = name + ".config",
@@ -157,6 +158,7 @@ def npm_integration_test(name, **kwargs):
         visibility = ["//visibility:private"],
         tags = ["manual"],
         testonly = True,
+        debug = debug,
     )
 
     # Config for debug target below

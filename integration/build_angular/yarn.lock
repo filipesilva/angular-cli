@@ -2,90 +2,25 @@
 # yarn lockfile v1
 
 
-"@angular-devkit/architect@0.0.0", "@angular-devkit/architect@file:/home/filipesilva/.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/dev-server.debug.sh.runfiles/angular_cli/packages/angular_devkit/architect/npm_package_archive.tar.gz":
+"@angular-devkit/architect@0.0.0", "@angular-devkit/architect@file:/home/filipesilva/.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/server.sh.runfiles/angular_cli/packages/angular_devkit/architect/npm_package_archive.tar.gz":
   version "0.0.0"
-  resolved "file:/home/filipesilva/.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/dev-server.debug.sh.runfiles/angular_cli/packages/angular_devkit/architect/npm_package_archive.tar.gz#d3c85d7181b11ba4cd2357f70869d263e21e7296"
+  resolved "file:/home/filipesilva/.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/server.sh.runfiles/angular_cli/packages/angular_devkit/architect/npm_package_archive.tar.gz#d3c85d7181b11ba4cd2357f70869d263e21e7296"
   dependencies:
     "@angular-devkit/core" "0.0.0"
     rxjs "6.5.4"
 
-"@angular-devkit/architect@file:../../../../.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/dev-server.debug.sh.runfiles/angular_cli/packages/angular_devkit/architect/npm_package_archive.tar.gz":
+"@angular-devkit/architect@file:../../../../.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/server.sh.runfiles/angular_cli/packages/angular_devkit/architect/npm_package_archive.tar.gz":
   version "0.0.0"
   uid d3c85d7181b11ba4cd2357f70869d263e21e7296
-  resolved "file:../../../../.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/dev-server.debug.sh.runfiles/angular_cli/packages/angular_devkit/architect/npm_package_archive.tar.gz#d3c85d7181b11ba4cd2357f70869d263e21e7296"
+  resolved "file:../../../../.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/server.sh.runfiles/angular_cli/packages/angular_devkit/architect/npm_package_archive.tar.gz#d3c85d7181b11ba4cd2357f70869d263e21e7296"
   dependencies:
     "@angular-devkit/core" "0.0.0"
     rxjs "6.5.4"
 
-"@angular-devkit/build-angular@file:../../../../.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/dev-server.debug.sh.runfiles/angular_cli/packages/angular_devkit/build_angular/npm_package_archive.tar.gz":
+"@angular-devkit/build-angular@file:../../../../.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/server.sh.runfiles/angular_cli/packages/angular_devkit/build_angular/npm_package_archive.tar.gz":
   version "0.0.0"
-  uid "840f4668452bb3fbcd0193b7282f727855ad9142"
-  resolved "file:../../../../.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/dev-server.debug.sh.runfiles/angular_cli/packages/angular_devkit/build_angular/npm_package_archive.tar.gz#840f4668452bb3fbcd0193b7282f727855ad9142"
-  dependencies:
-    "@angular-devkit/architect" "0.0.0"
-    "@angular-devkit/build-optimizer" "0.0.0"
-    "@angular-devkit/build-webpack" "0.0.0"
-    "@angular-devkit/core" "0.0.0"
-    "@babel/core" "7.8.6"
-    "@babel/preset-env" "7.8.6"
-    "@babel/template" "7.8.6"
-    "@ngtools/webpack" "0.0.0"
-    ajv "6.12.0"
-    autoprefixer "9.7.4"
-    babel-loader "8.0.6"
-    browserslist "4.8.6"
-    cacache "15.0.0"
-    caniuse-lite "1.0.30001023"
-    circular-dependency-plugin "5.2.0"
-    copy-webpack-plugin "5.1.1"
-    core-js "3.6.4"
-    coverage-istanbul-loader "2.0.3"
-    cssnano "4.1.10"
-    file-loader "5.1.0"
-    find-cache-dir "3.3.0"
-    glob "7.1.6"
-    jest-worker "25.1.0"
-    karma-source-map-support "1.4.0"
-    less "3.11.1"
-    less-loader "5.0.0"
-    license-webpack-plugin "2.1.3"
-    loader-utils "1.4.0"
-    mini-css-extract-plugin "0.9.0"
-    minimatch "3.0.4"
-    open "7.0.2"
-    parse5 "4.0.0"
-    postcss "7.0.27"
-    postcss-import "12.0.1"
-    postcss-loader "3.0.0"
-    raw-loader "4.0.0"
-    regenerator-runtime "0.13.3"
-    rimraf "3.0.2"
-    rollup "1.32.0"
-    rxjs "6.5.4"
-    sass "1.26.2"
-    sass-loader "8.0.2"
-    semver "7.1.3"
-    source-map "0.7.3"
-    source-map-loader "0.2.4"
-    source-map-support "0.5.16"
-    speed-measure-webpack-plugin "1.3.1"
-    style-loader "1.1.3"
-    stylus "0.54.7"
-    stylus-loader "3.0.2"
-    terser "4.6.4"
-    terser-webpack-plugin "2.3.5"
-    tree-kill "1.2.2"
-    webpack "4.42.0"
-    webpack-dev-middleware "3.7.2"
-    webpack-dev-server "3.10.3"
-    webpack-merge "4.2.2"
-    webpack-sources "1.4.3"
-    webpack-subresource-integrity "1.4.0"
-    worker-plugin "3.2.0"
-
-"@angular-devkit/build-angular@file:/home/filipesilva/.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/dev-server.debug.sh.runfiles/angular_cli/packages/angular_devkit/build_angular/npm_package_archive.tar.gz":
-  version "0.0.0"
-  resolved "file:/home/filipesilva/.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/dev-server.debug.sh.runfiles/angular_cli/packages/angular_devkit/build_angular/npm_package_archive.tar.gz#840f4668452bb3fbcd0193b7282f727855ad9142"
+  uid dd8aca592c550efd5076bca3c8fdf4822b6a8f0b
+  resolved "file:../../../../.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/server.sh.runfiles/angular_cli/packages/angular_devkit/build_angular/npm_package_archive.tar.gz#dd8aca592c550efd5076bca3c8fdf4822b6a8f0b"
   dependencies:
     "@angular-devkit/architect" "0.0.0"
     "@angular-devkit/build-optimizer" "0.0.0"
@@ -148,9 +83,74 @@
     webpack-subresource-integrity "1.4.0"
     worker-plugin "3.2.0"
 
-"@angular-devkit/build-optimizer@0.0.0", "@angular-devkit/build-optimizer@file:/home/filipesilva/.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/dev-server.debug.sh.runfiles/angular_cli/packages/angular_devkit/build_optimizer/npm_package_archive.tar.gz":
+"@angular-devkit/build-angular@file:/home/filipesilva/.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/server.sh.runfiles/angular_cli/packages/angular_devkit/build_angular/npm_package_archive.tar.gz":
   version "0.0.0"
-  resolved "file:/home/filipesilva/.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/dev-server.debug.sh.runfiles/angular_cli/packages/angular_devkit/build_optimizer/npm_package_archive.tar.gz#0e3efaa3bee0d3f6177896c7fc0bf0a7eb9aac57"
+  resolved "file:/home/filipesilva/.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/server.sh.runfiles/angular_cli/packages/angular_devkit/build_angular/npm_package_archive.tar.gz#dd8aca592c550efd5076bca3c8fdf4822b6a8f0b"
+  dependencies:
+    "@angular-devkit/architect" "0.0.0"
+    "@angular-devkit/build-optimizer" "0.0.0"
+    "@angular-devkit/build-webpack" "0.0.0"
+    "@angular-devkit/core" "0.0.0"
+    "@babel/core" "7.8.6"
+    "@babel/preset-env" "7.8.6"
+    "@babel/template" "7.8.6"
+    "@ngtools/webpack" "0.0.0"
+    ajv "6.12.0"
+    autoprefixer "9.7.4"
+    babel-loader "8.0.6"
+    browserslist "4.8.6"
+    cacache "15.0.0"
+    caniuse-lite "1.0.30001023"
+    circular-dependency-plugin "5.2.0"
+    copy-webpack-plugin "5.1.1"
+    core-js "3.6.4"
+    coverage-istanbul-loader "2.0.3"
+    cssnano "4.1.10"
+    file-loader "5.1.0"
+    find-cache-dir "3.3.0"
+    glob "7.1.6"
+    jest-worker "25.1.0"
+    karma-source-map-support "1.4.0"
+    less "3.11.1"
+    less-loader "5.0.0"
+    license-webpack-plugin "2.1.3"
+    loader-utils "1.4.0"
+    mini-css-extract-plugin "0.9.0"
+    minimatch "3.0.4"
+    open "7.0.2"
+    parse5 "4.0.0"
+    postcss "7.0.27"
+    postcss-import "12.0.1"
+    postcss-loader "3.0.0"
+    raw-loader "4.0.0"
+    regenerator-runtime "0.13.3"
+    rimraf "3.0.2"
+    rollup "1.32.0"
+    rxjs "6.5.4"
+    sass "1.26.2"
+    sass-loader "8.0.2"
+    semver "7.1.3"
+    source-map "0.7.3"
+    source-map-loader "0.2.4"
+    source-map-support "0.5.16"
+    speed-measure-webpack-plugin "1.3.1"
+    style-loader "1.1.3"
+    stylus "0.54.7"
+    stylus-loader "3.0.2"
+    terser "4.6.4"
+    terser-webpack-plugin "2.3.5"
+    tree-kill "1.2.2"
+    webpack "4.42.0"
+    webpack-dev-middleware "3.7.2"
+    webpack-dev-server "3.10.3"
+    webpack-merge "4.2.2"
+    webpack-sources "1.4.3"
+    webpack-subresource-integrity "1.4.0"
+    worker-plugin "3.2.0"
+
+"@angular-devkit/build-optimizer@0.0.0", "@angular-devkit/build-optimizer@file:/home/filipesilva/.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/server.sh.runfiles/angular_cli/packages/angular_devkit/build_optimizer/npm_package_archive.tar.gz":
+  version "0.0.0"
+  resolved "file:/home/filipesilva/.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/server.sh.runfiles/angular_cli/packages/angular_devkit/build_optimizer/npm_package_archive.tar.gz#0e3efaa3bee0d3f6177896c7fc0bf0a7eb9aac57"
   dependencies:
     loader-utils "1.4.0"
     source-map "0.7.3"
@@ -158,17 +158,17 @@
     typescript "3.8.3"
     webpack-sources "1.4.3"
 
-"@angular-devkit/build-webpack@0.0.0", "@angular-devkit/build-webpack@file:/home/filipesilva/.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/dev-server.debug.sh.runfiles/angular_cli/packages/angular_devkit/build_webpack/npm_package_archive.tar.gz":
+"@angular-devkit/build-webpack@0.0.0", "@angular-devkit/build-webpack@file:/home/filipesilva/.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/server.sh.runfiles/angular_cli/packages/angular_devkit/build_webpack/npm_package_archive.tar.gz":
   version "0.0.0"
-  resolved "file:/home/filipesilva/.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/dev-server.debug.sh.runfiles/angular_cli/packages/angular_devkit/build_webpack/npm_package_archive.tar.gz#0ff97f366df3f7e9516847c37900ecd6dab5c453"
+  resolved "file:/home/filipesilva/.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/server.sh.runfiles/angular_cli/packages/angular_devkit/build_webpack/npm_package_archive.tar.gz#647e743a8aceacd4aeeb78dd134850cfbeff88ac"
   dependencies:
     "@angular-devkit/architect" "0.0.0"
     "@angular-devkit/core" "0.0.0"
     rxjs "6.5.4"
 
-"@angular-devkit/core@0.0.0", "@angular-devkit/core@file:/home/filipesilva/.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/dev-server.debug.sh.runfiles/angular_cli/packages/angular_devkit/core/npm_package_archive.tar.gz":
+"@angular-devkit/core@0.0.0", "@angular-devkit/core@file:/home/filipesilva/.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/server.sh.runfiles/angular_cli/packages/angular_devkit/core/npm_package_archive.tar.gz":
   version "0.0.0"
-  resolved "file:/home/filipesilva/.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/dev-server.debug.sh.runfiles/angular_cli/packages/angular_devkit/core/npm_package_archive.tar.gz#c005055236edb49d53b9cbe8555d3d6729ca8a17"
+  resolved "file:/home/filipesilva/.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/server.sh.runfiles/angular_cli/packages/angular_devkit/core/npm_package_archive.tar.gz#c005055236edb49d53b9cbe8555d3d6729ca8a17"
   dependencies:
     ajv "6.12.0"
     fast-json-stable-stringify "2.1.0"
@@ -176,10 +176,10 @@
     rxjs "6.5.4"
     source-map "0.7.3"
 
-"@angular-devkit/core@file:../../../../.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/dev-server.debug.sh.runfiles/angular_cli/packages/angular_devkit/core/npm_package_archive.tar.gz":
+"@angular-devkit/core@file:../../../../.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/server.sh.runfiles/angular_cli/packages/angular_devkit/core/npm_package_archive.tar.gz":
   version "0.0.0"
   uid c005055236edb49d53b9cbe8555d3d6729ca8a17
-  resolved "file:../../../../.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/dev-server.debug.sh.runfiles/angular_cli/packages/angular_devkit/core/npm_package_archive.tar.gz#c005055236edb49d53b9cbe8555d3d6729ca8a17"
+  resolved "file:../../../../.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/server.sh.runfiles/angular_cli/packages/angular_devkit/core/npm_package_archive.tar.gz#c005055236edb49d53b9cbe8555d3d6729ca8a17"
   dependencies:
     ajv "6.12.0"
     fast-json-stable-stringify "2.1.0"
@@ -1049,9 +1049,9 @@
   resolved "https://registry.yarnpkg.com/@istanbuljs/schema/-/schema-0.1.2.tgz#26520bf09abe4a5644cd5414e37125a8954241dd"
   integrity sha512-tsAQNx32a8CoFhjhijUIhI4kccIAgmGhy8LZMZgGfmXcpMbPRUqn5LWmgRttILi6yeGmBJd2xsPkFMs0PzgPCw==
 
-"@ngtools/webpack@0.0.0", "@ngtools/webpack@file:/home/filipesilva/.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/dev-server.debug.sh.runfiles/angular_cli/packages/ngtools/webpack/npm_package_archive.tar.gz":
+"@ngtools/webpack@0.0.0", "@ngtools/webpack@file:/home/filipesilva/.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/server.sh.runfiles/angular_cli/packages/ngtools/webpack/npm_package_archive.tar.gz":
   version "0.0.0"
-  resolved "file:/home/filipesilva/.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/dev-server.debug.sh.runfiles/angular_cli/packages/ngtools/webpack/npm_package_archive.tar.gz#af035a4ae6d4d0080b4b3a8186bff9428bbe869b"
+  resolved "file:/home/filipesilva/.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/execroot/angular_cli/bazel-out/k8-fastbuild/bin/integration/build_angular/server.sh.runfiles/angular_cli/packages/ngtools/webpack/npm_package_archive.tar.gz#af035a4ae6d4d0080b4b3a8186bff9428bbe869b"
   dependencies:
     "@angular-devkit/core" "0.0.0"
     enhanced-resolve "4.1.1"

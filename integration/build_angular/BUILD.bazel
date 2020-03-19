@@ -11,6 +11,8 @@ filegroup(
     ),
 )
 
+YARN_CACHE_FLAG = "--cache-folder ./.yarn_local_cache"
+
 INTEGRATION_TESTS = [
     "app-shell",
     "browser-1",
@@ -45,14 +47,17 @@ INTEGRATION_TESTS = [
             "//packages/ngtools/webpack:npm_package_archive": "@ngtools/webpack",
         },
         commands = [
+            "patch-package-json",
             # Workaround https://github.com/yarnpkg/yarn/issues/2165
             # Yarn will cache file://dist URIs and not update
-            "rm -rf ./.yarn_local_cache",
-            "mkdir .yarn_local_cache",
-            "patch-package-json",
-            "$(rootpath @nodejs//:yarn_bin) install --cache-folder ./.yarn_local_cache",
+            "$(rootpath @nodejs//:yarn_bin) cache clean @angular-devkit/architect " + YARN_CACHE_FLAG,
+            "$(rootpath @nodejs//:yarn_bin) cache clean @angular-devkit/build-angular " + YARN_CACHE_FLAG,
+            "$(rootpath @nodejs//:yarn_bin) cache clean @angular-devkit/build-optimizer " + YARN_CACHE_FLAG,
+            "$(rootpath @nodejs//:yarn_bin) cache clean @angular-devkit/build-webpack " + YARN_CACHE_FLAG,
+            "$(rootpath @nodejs//:yarn_bin) cache clean @angular-devkit/core " + YARN_CACHE_FLAG,
+            "$(rootpath @nodejs//:yarn_bin) cache clean @ngtools/webpack " + YARN_CACHE_FLAG,
+            "$(rootpath @nodejs//:yarn_bin) install " + YARN_CACHE_FLAG,
             "$(rootpath @nodejs//:yarn_bin) test-" + test_name,
-            "rm -rf ./.yarn_local_cache",
         ],
         data = [
             "@nodejs//:yarn_bin",
@@ -60,7 +65,11 @@ INTEGRATION_TESTS = [
         ],
         test_files = ":build_angular_sources",
         size = "large",
-        tags = ["exclusive"]
+        tags = ["exclusive"],
+        # This test contains a lot of node modules that can take up to 100s to install.
+        # Instead of completely isolating the test and the cache, this one is run in-place so it 
+        # reuses the local node_modules and cache for all tests in this BUILD file.
+        debug = True
     )
     for test_name in INTEGRATION_TESTS
 ]
