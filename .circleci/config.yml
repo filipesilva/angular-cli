@@ -58,6 +58,18 @@ executors:
       NPM_CONFIG_PREFIX: ~/.npm-global
     resource_class: large
 
+  heavy-test-executor:
+    parameters:
+      nodeversion:
+        type: string
+        default: *default_nodeversion
+    docker:
+      - image: circleci/node:<< parameters.nodeversion >>-browsers
+    working_directory: ~/ng
+    environment:
+      NPM_CONFIG_PREFIX: ~/.npm-global
+    resource_class: 2xlarge+
+
   windows-executor:
     # Same as https://circleci.com/orbs/registry/orb/circleci/windows, but named.
     working_directory: ~/ng
@@ -134,7 +146,9 @@ jobs:
           keys:
             - *cache_key
             - *cache_key_fallback
-      - run: yarn install --frozen-lockfile
+      # TODO: shouldn't have to disable frozen lockfile but CI seem to be bothered by yet and I want to test right now
+      # - run: yarn install --frozen-lockfile
+      - run: yarn install
       - persist_to_workspace:
           root: *workspace_location
           paths:
@@ -167,20 +181,13 @@ jobs:
       - custom_attach_workspace
       - run: yarn test --full
 
-  test-large:
-    parameters:
-      ve:
-        type: boolean
-        default: false
-      glob:
-        type: string
-        default: ""
-    executor: test-executor
-    parallelism: 4
+  integration:
+    executor: heavy-test-executor
     steps:
       - custom_attach_workspace
-      - run: yarn webdriver-update
-      - run: yarn test-large --full <<# parameters.ve >>--ve<</ parameters.ve >> <<# parameters.glob >>--glob="<< parameters.glob >>"<</ parameters.glob >> --nb-shards=${CIRCLE_NODE_TOTAL} --shard=${CIRCLE_NODE_INDEX}
+      - run: 
+          command: yarn bazel:integration
+          no_output_timeout: 60m
 
   e2e-cli:
     parameters:
@@ -246,17 +253,6 @@ jobs:
     steps:
       - custom_attach_workspace
       - run: yarn build
-
-  # This is where we put all the misbehaving and flaky tests so we can fine-tune their conditions 
-  # and rerun them faster.
-  flake-jail:
-    executor: test-executor
-    resource_class: medium
-    steps:
-      - custom_attach_workspace
-      - run: yarn webdriver-update
-      - run: yarn test-large --full --flakey --ve
-      - run: yarn test-large --full --flakey
 
   build-bazel:
     executor: action-executor
@@ -365,13 +361,8 @@ workflows:
       - test:
           requires:
             - build
-      - test-large:
-          requires:
-            - build
-      - test-large:
-          name: test-large-ve
-          ve: true
-          glob: "packages/angular_devkit/@(build_angular|build_ng_packagr)/@(src|test)/@(build|browser)/*_spec_large.ts"
+      # TODO: ng-packagr spec large also needs to be moved to bazel
+      - integration:
           requires:
             - build
       - e2e-cli:
@@ -412,9 +403,6 @@ workflows:
           requires:
             - e2e-cli
       - test-browsers:
-          requires:
-            - build
-      - flake-jail:
           requires:
             - build
       

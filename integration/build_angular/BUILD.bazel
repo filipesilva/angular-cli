@@ -68,6 +68,7 @@ INTEGRATION_TESTS = [
             "//packages/angular_devkit/core:npm_package_archive": "@angular-devkit/core",
             "//packages/ngtools/webpack:npm_package_archive": "@ngtools/webpack",
         },
+        # TODO: figure out if CI can handle this not being exclusive.
         tags = ["exclusive"],
         test_files = ":build_angular_sources",
     )
