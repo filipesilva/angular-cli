@@ -5,8 +5,8 @@ filegroup(
     srcs = glob(
         include = ["**/*"],
         exclude = [
-          "node_modules/**",
-          ".yarn_local_cache/**",
+            "node_modules/**",
+            ".yarn_local_cache/**",
         ],
     ),
 )
@@ -30,6 +30,7 @@ INTEGRATION_TESTS = [
 [
     npm_integration_test(
         name = test_name,
+        size = "large",
         check_npm_packages = [
             "@angular-devkit/architect",
             "@angular-devkit/build-angular",
@@ -38,14 +39,6 @@ INTEGRATION_TESTS = [
             "@angular-devkit/core",
             "@ngtools/webpack",
         ],
-        npm_packages = {
-            "//packages/angular_devkit/architect:npm_package_archive": "@angular-devkit/architect",
-            "//packages/angular_devkit/build_optimizer:npm_package_archive": "@angular-devkit/build-optimizer",
-            "//packages/angular_devkit/build_webpack:npm_package_archive": "@angular-devkit/build-webpack",
-            "//packages/angular_devkit/build_angular:npm_package_archive": "@angular-devkit/build-angular",
-            "//packages/angular_devkit/core:npm_package_archive": "@angular-devkit/core",
-            "//packages/ngtools/webpack:npm_package_archive": "@ngtools/webpack",
-        },
         commands = [
             "patch-package-json",
             # Workaround https://github.com/yarnpkg/yarn/issues/2165
@@ -63,13 +56,20 @@ INTEGRATION_TESTS = [
             "@nodejs//:yarn_bin",
             "@nodejs//:yarn_files",
         ],
-        test_files = ":build_angular_sources",
-        size = "large",
-        tags = ["exclusive"],
         # This test contains a lot of node modules that can take up to 100s to install.
-        # Instead of completely isolating the test and the cache, this one is run in-place so it 
+        # Instead of completely isolating the test and the cache, this one is run in-place so it
         # reuses the local node_modules and cache for all tests in this BUILD file.
-        debug = True
+        debug = True,
+        npm_packages = {
+            "//packages/angular_devkit/architect:npm_package_archive": "@angular-devkit/architect",
+            "//packages/angular_devkit/build_optimizer:npm_package_archive": "@angular-devkit/build-optimizer",
+            "//packages/angular_devkit/build_webpack:npm_package_archive": "@angular-devkit/build-webpack",
+            "//packages/angular_devkit/build_angular:npm_package_archive": "@angular-devkit/build-angular",
+            "//packages/angular_devkit/core:npm_package_archive": "@angular-devkit/core",
+            "//packages/ngtools/webpack:npm_package_archive": "@ngtools/webpack",
+        },
+        tags = ["exclusive"],
+        test_files = ":build_angular_sources",
     )
     for test_name in INTEGRATION_TESTS
 ]

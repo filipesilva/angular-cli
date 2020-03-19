@@ -25,7 +25,7 @@ ts_library(
             "**/*_spec_large.ts",
         ],
     ) + [
-      "//packages/angular/pwa:pwa/schema.ts",
+        "//packages/angular/pwa:pwa/schema.ts",
     ],
     deps = [
         "//packages/angular_devkit/core",

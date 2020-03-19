@@ -5,8 +5,8 @@ filegroup(
     srcs = glob(
         include = ["**/*"],
         exclude = [
-          "node_modules/**",
-          ".yarn_local_cache/**",
+            "node_modules/**",
+            ".yarn_local_cache/**",
         ],
     ),
 )
@@ -14,30 +14,30 @@ filegroup(
 npm_integration_test(
     name = "build_webpack",
     check_npm_packages = [
-      "@angular-devkit/architect",
-      "@angular-devkit/build-webpack",
-      "@angular-devkit/core",
-      "@ngtools/webpack",
+        "@angular-devkit/architect",
+        "@angular-devkit/build-webpack",
+        "@angular-devkit/core",
+        "@ngtools/webpack",
     ],
-    npm_packages = {
-      "//packages/angular_devkit/architect:npm_package_archive": "@angular-devkit/architect",
-      "//packages/angular_devkit/build_webpack:npm_package_archive": "@angular-devkit/build-webpack",
-      "//packages/angular_devkit/core:npm_package_archive": "@angular-devkit/core",
-      "//packages/ngtools/webpack:npm_package_archive": "@ngtools/webpack",
-    },
     commands = [
-      # Workaround https://github.com/yarnpkg/yarn/issues/2165
-      # Yarn will cache file://dist URIs and not update
-      "rm -rf ./.yarn_local_cache",
-      "mkdir .yarn_local_cache",
-      "patch-package-json",
-      "$(rootpath @nodejs//:yarn_bin) install --cache-folder ./.yarn_local_cache",
-      "$(rootpath @nodejs//:yarn_bin) --cache-folder ./.yarn_local_cache test",
-      "rm -rf ./.yarn_local_cache",
+        # Workaround https://github.com/yarnpkg/yarn/issues/2165
+        # Yarn will cache file://dist URIs and not update
+        "rm -rf ./.yarn_local_cache",
+        "mkdir .yarn_local_cache",
+        "patch-package-json",
+        "$(rootpath @nodejs//:yarn_bin) install --cache-folder ./.yarn_local_cache",
+        "$(rootpath @nodejs//:yarn_bin) --cache-folder ./.yarn_local_cache test",
+        "rm -rf ./.yarn_local_cache",
     ],
     data = [
-      "@nodejs//:yarn_bin",
-      "@nodejs//:yarn_files",
+        "@nodejs//:yarn_bin",
+        "@nodejs//:yarn_files",
     ],
-    test_files = ":build_webpack_sources"
+    npm_packages = {
+        "//packages/angular_devkit/architect:npm_package_archive": "@angular-devkit/architect",
+        "//packages/angular_devkit/build_webpack:npm_package_archive": "@angular-devkit/build-webpack",
+        "//packages/angular_devkit/core:npm_package_archive": "@angular-devkit/core",
+        "//packages/ngtools/webpack:npm_package_archive": "@ngtools/webpack",
+    },
+    test_files = ":build_webpack_sources",
 )
