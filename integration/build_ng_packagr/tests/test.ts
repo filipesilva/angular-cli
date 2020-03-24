@@ -21,13 +21,10 @@ import { map, take, tap } from 'rxjs/operators';
 // Default timeout for large specs is 2.5 minutes.
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 150000;
 
-// TODO: figure out how to test VE too
-export const veEnabled = process.argv.includes('--ve');
-// const workspaceRoot = join(
-//   normalize(devkitRoot),
-//   `tests/angular_devkit/build_ng_packagr/ng-packaged${veEnabled ? '-ve' : ''}/`,
-// );
-
+// This flag controls whether AOT compilation uses Ivy or View Engine (VE).
+// It is changed by ./enable-ve.ts, which can be loaded by jasmine via --helper.
+export let veEnabled = false;
+export const enableVe = () => veEnabled = true;
 export const workspaceRoot = join(normalize(__dirname), `../ng-packaged/`);
 
 describe('NgPackagr Builder', () => {
@@ -52,6 +49,11 @@ describe('NgPackagr Builder', () => {
     );
 
     architect = new Architect(architectHost, registry);
+
+    // Set AOT compilation to use VE if needed.
+    if (veEnabled) {
+      host.replaceInFile('tsconfig.json', `"enableIvy": true,`, `"enableIvy": false,`);
+    }
   });
 
   afterEach(() => host.restore().toPromise());

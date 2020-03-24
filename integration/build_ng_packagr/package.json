@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "tsc -p tests/tsconfig.json",
-    "test": "jasmine tests-tsc-out/test.js"
+    "test": "jasmine tests-tsc-out/test.js",
+    "test-ve": "jasmine tests-tsc-out/test.js --helper=./tests-tsc-out/enable-ve.js"
   },
   "dependencies": {
     "@angular-devkit/architect": "^0.900.5",
