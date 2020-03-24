@@ -64,7 +64,6 @@ ts_library(
         include = [
             "src/test-utils.ts",
             "src/**/*_spec.ts",
-            "src/**/*_spec_large.ts",
         ],
     ),
     data = glob(

@@ -180,7 +180,6 @@ ts_library(
         include = [
             "plugins/**/*_spec.ts",
             "src/**/*_spec.ts",
-            "src/**/*_spec_large.ts",
         ],
     ),
     data = glob(["test/**/*"]),

@@ -15,10 +15,7 @@ ts_library(
     name = "angular-cli",
     srcs = glob(
         ["**/*.ts"],
-        exclude = [
-            "**/*_spec.ts",
-            "**/*_spec_large.ts",
-        ],
+        exclude = ["**/*_spec.ts"],
     ) + [
         "//packages/angular/cli:lib/config/schema.ts",
         "//packages/angular/cli:commands/analytics.ts",
@@ -226,12 +223,7 @@ ts_json_schema(
 ts_library(
     name = "angular-cli_test_lib",
     testonly = True,
-    srcs = glob(
-        include = [
-            "**/*_spec.ts",
-            "**/*_spec_large.ts",
-        ],
-    ),
+    srcs = glob(["**/*_spec.ts"]),
     # strict_checks = False,
     tsconfig = "//:tsconfig-test.json",
     deps = [

@@ -32,8 +32,6 @@
     "fix": "node ./bin/devkit-admin lint --fix",
     "lint": "node ./bin/devkit-admin lint",
     "templates": "node ./bin/devkit-admin templates",
-    "test": "node ./bin/devkit-admin test",
-    "test-large": "node ./bin/devkit-admin test --large --spec-reporter",
     "validate": "node ./bin/devkit-admin validate",
     "validate-commits": "./bin/devkit-admin validate-commits",
     "preinstall": "node ./tools/yarn/check-yarn.js",

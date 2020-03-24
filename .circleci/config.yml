@@ -175,12 +175,6 @@ jobs:
       - custom_attach_workspace
       - run: yarn validate --ci
 
-  test:
-    executor: action-executor
-    steps:
-      - custom_attach_workspace
-      - run: yarn test --full
-
   integration:
     executor: heavy-test-executor
     steps:
@@ -324,7 +318,6 @@ jobs:
     steps:
       - custom_attach_workspace
       - setup_windows
-      - run: yarn test --full
       # Run partial e2e suite on PRs only. Master will run the full e2e suite with sharding.
       - run: if (Test-Path env:CIRCLE_PR_NUMBER) { node tests\legacy-cli\run_e2e.js "--glob=tests/{basic,ivy}/**" }
              
@@ -358,10 +351,6 @@ workflows:
       - build-bazel:
           requires:
             - build
-      - test:
-          requires:
-            - build
-      # TODO: ng-packagr spec large also needs to be moved to bazel
       - integration:
           requires:
             - build
@@ -417,8 +406,8 @@ workflows:
             - build
       - test-win:
           requires:
+            - build-bazel
             - setup-and-build-win
-            - test
       - e2e-cli-win:
           <<: *only_release_branches
           requires:
@@ -429,13 +418,13 @@ workflows:
       - snapshot_publish:
           <<: *only_release_branches
           requires:
-            - test
             - build
+            - build-bazel
             - e2e-cli
       - publish:
           requires:
-            - test
             - build
+            - build-bazel
             - e2e-cli
             - snapshot_publish
           filters:
