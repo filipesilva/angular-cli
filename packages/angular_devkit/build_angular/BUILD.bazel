@@ -7,6 +7,7 @@ licenses(["notice"])  # MIT
 
 load("@bazel_tools//tools/build_defs/pkg:pkg.bzl", "pkg_tar")
 load("@npm_bazel_typescript//:index.bzl", "ts_library")
+load("@npm_bazel_jasmine//:index.bzl", "jasmine_node_test")
 load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
 load("//tools:ts_json_schema.bzl", "ts_json_schema")
 
@@ -170,6 +171,36 @@ ts_library(
         "@npm//webpack-subresource-integrity",
         "@npm//worker-plugin",
     ],
+)
+
+ts_library(
+    name = "build_angular_test_lib",
+    testonly = True,
+    srcs = glob(
+        include = [
+            "plugins/**/*_spec.ts",
+            "src/**/*_spec.ts",
+            "src/**/*_spec_large.ts",
+        ],
+    ),
+    data = glob(["test/**/*"]),
+    # strict_checks = False,
+    tsconfig = "//:tsconfig-test.json",
+    deps = [
+        ":build_angular",
+        "//packages/angular_devkit/architect/testing",
+        "//packages/angular_devkit/core",
+        "@npm//@types/jasmine",
+        "@npm//@types/node",
+        "@npm//@types/webpack",
+        "@npm//typescript",
+        "@npm//webpack",
+    ],
+)
+
+jasmine_node_test(
+    name = "build_angular_test",
+    srcs = [":build_angular_test_lib"],
 )
 
 pkg_npm(
