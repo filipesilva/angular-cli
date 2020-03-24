@@ -25,12 +25,10 @@ import 'jasmine';
 // Default timeout for large specs is 2.5 minutes.
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 150000;
 
-// TODO: figure out how to test VE too
-export const veEnabled = process.argv.includes('--ve');
-// export const workspaceRoot = join(
-//   devkitRoot,
-//   `tests/angular_devkit/build_angular/hello-world-app${veEnabled ? '-ve' : ''}/`,
-// );
+// This flag controls whether AOT compilation uses Ivy or View Engine (VE).
+// It is changed by ./enable-ve.ts, which can be loaded by jasmine via --helper.
+export let veEnabled = false;
+export const enableVe = () => veEnabled = true;
 export const workspaceRoot = join(normalize(__dirname), `../hello-world-app/`);
 export const host = new TestProjectHost(workspaceRoot);
 export const outputPath: Path = normalize('dist');
@@ -57,6 +55,11 @@ export async function createArchitect(workspaceRoot: Path) {
     new WorkspaceNodeModulesArchitectHost(workspace, workspaceSysPath),
   );
   const architect = new Architect(architectHost, registry);
+
+  // Set AOT compilation to use VE if needed.
+  if (veEnabled) {
+    host.replaceInFile('tsconfig.json', `"enableIvy": true,`, `"enableIvy": false,`);
+  }
 
   return {
     workspace,

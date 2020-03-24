@@ -25,6 +25,12 @@ INTEGRATION_TESTS = [
     "protractor",
     "server",
     "tslint",
+    "browser-1-ve",
+    "browser-2-ve",
+    "browser-3-ve",
+    "browser-4-ve",
+    "server-ve",
+    "extract-i18n-ve",
 ]
 
 [
