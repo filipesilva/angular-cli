@@ -18,13 +18,17 @@ import {
 } from '@angular-devkit/core'; // tslint:disable-line:no-implicit-dependencies
 import { map, take, tap } from 'rxjs/operators';
 
-const veEnabled = process.argv.includes('--ve');
+// Default timeout for large specs is 2.5 minutes.
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 150000;
 
-const devkitRoot = (global as unknown as { _DevKitRoot: string})._DevKitRoot;
-const workspaceRoot = join(
-  normalize(devkitRoot),
-  `tests/angular_devkit/build_ng_packagr/ng-packaged${veEnabled ? '-ve' : ''}/`,
-);
+// TODO: figure out how to test VE too
+export const veEnabled = process.argv.includes('--ve');
+// const workspaceRoot = join(
+//   normalize(devkitRoot),
+//   `tests/angular_devkit/build_ng_packagr/ng-packaged${veEnabled ? '-ve' : ''}/`,
+// );
+
+export const workspaceRoot = join(normalize(__dirname), `../ng-packaged/`);
 
 describe('NgPackagr Builder', () => {
   const host = new TestProjectHost(workspaceRoot);
