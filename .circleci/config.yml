@@ -58,18 +58,6 @@ executors:
       NPM_CONFIG_PREFIX: ~/.npm-global
     resource_class: large
 
-  heavy-test-executor:
-    parameters:
-      nodeversion:
-        type: string
-        default: *default_nodeversion
-    docker:
-      - image: circleci/node:<< parameters.nodeversion >>-browsers
-    working_directory: ~/ng
-    environment:
-      NPM_CONFIG_PREFIX: ~/.npm-global
-    resource_class: 2xlarge+
-
   windows-executor:
     # Same as https://circleci.com/orbs/registry/orb/circleci/windows, but named.
     working_directory: ~/ng
@@ -176,7 +164,7 @@ jobs:
       - run: yarn validate --ci
 
   integration:
-    executor: heavy-test-executor
+    executor: test-executor
     steps:
       - custom_attach_workspace
       - run: 
