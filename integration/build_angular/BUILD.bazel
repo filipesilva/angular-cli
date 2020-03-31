@@ -74,8 +74,10 @@ INTEGRATION_TESTS = [
             "//packages/angular_devkit/core:npm_package_archive": "@angular-devkit/core",
             "//packages/ngtools/webpack:npm_package_archive": "@ngtools/webpack",
         },
-        # TODO: figure out if CI can handle this not being exclusive.
-        tags = ["exclusive"],
+        # These tests are resource intensive and should not be over-parallized
+        # as they will compete for the resources of other parallel tests slowing
+        # everything down. Ask Bazel to allocate multiple CPUs for these tests with "cpu:n" tag.
+        tags = ["cpu:2"],
         test_files = ":build_angular_sources",
     )
     for test_name in INTEGRATION_TESTS
