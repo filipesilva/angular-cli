@@ -35,6 +35,8 @@ ts_library(
             "pwa/files/**/*",
         ],
     ),
+    devmode_module = "commonjs",
+    devmode_target = "es2018",
     deps = [
         "//packages/angular_devkit/core",
         "//packages/angular_devkit/schematics",
@@ -54,6 +56,8 @@ ts_library(
     name = "pwa_test_lib",
     testonly = True,
     srcs = glob(["pwa/**/*_spec.ts"]),
+    devmode_module = "commonjs",
+    devmode_target = "es2018",
     # strict_checks = False,
     tsconfig = "//:tsconfig-test.json",
     deps = [

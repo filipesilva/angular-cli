@@ -32,6 +32,8 @@ ts_library(
             "src/build/schema.json",
         ],
     ),
+    devmode_module = "commonjs",
+    devmode_target = "es2018",
     module_name = "@angular-devkit/build-ng-packagr",
     module_root = "src/index.d.ts",
     deps = [

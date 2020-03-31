@@ -23,6 +23,8 @@ ts_library(
         "//packages/schematics/update:update/schema.ts",
         "//packages/schematics/update:migrate/schema.ts",
     ],
+    devmode_module = "commonjs",
+    devmode_target = "es2018",
     deps = [
         "//packages/angular_devkit/core",
         "//packages/angular_devkit/schematics",
@@ -55,6 +57,8 @@ ts_library(
             "**/*.json",
         ],
     ),
+    devmode_module = "commonjs",
+    devmode_target = "es2018",
     # @external_begin
     tsconfig = "//:tsconfig-test.json",
     deps = [

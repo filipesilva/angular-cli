@@ -83,6 +83,8 @@ ts_library(
             "src/**/*.html",
         ],
     ),
+    devmode_module = "commonjs",
+    devmode_target = "es2018",
     module_name = "@angular-devkit/build-angular",
     module_root = "src/index.d.ts",
     deps = [
@@ -183,6 +185,8 @@ ts_library(
         ],
     ),
     data = glob(["test/**/*"]),
+    devmode_module = "commonjs",
+    devmode_target = "es2018",
     # strict_checks = False,
     tsconfig = "//:tsconfig-test.json",
     deps = [

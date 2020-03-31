@@ -163,14 +163,6 @@ jobs:
       - custom_attach_workspace
       - run: yarn validate --ci
 
-  integration:
-    executor: test-executor
-    steps:
-      - custom_attach_workspace
-      - run: 
-          command: yarn bazel:integration
-          no_output_timeout: 60m
-
   e2e-cli:
     parameters:
       ve:
@@ -237,13 +229,22 @@ jobs:
       - run: yarn build
 
   build-bazel:
-    executor: action-executor
-    resource_class: large
+    executor: test-executor
+    resource_class: xlarge
     steps:
       - custom_attach_workspace
       - setup_bazel_rbe
       - run: sudo cp .circleci/bazel.rc /etc/bazel.bazelrc
       - run: yarn bazel:test
+
+  integration:
+    executor: test-executor
+    resource_class: xlarge
+    steps:
+      - custom_attach_workspace
+      - run: 
+          command: yarn bazel:integration
+          no_output_timeout: 60m      
 
   snapshot_publish:
     executor: action-executor

@@ -43,6 +43,8 @@ ts_library(
             "src/webpack-dev-server/schema.json",
         ],
     ),
+    devmode_module = "commonjs",
+    devmode_target = "es2018",
     module_name = "@angular-devkit/build-webpack",
     module_root = "src/index.d.ts",
     deps = [
@@ -71,6 +73,8 @@ ts_library(
             "test/**/*",
         ],
     ),
+    devmode_module = "commonjs",
+    devmode_target = "es2018",
     tsconfig = "//:tsconfig-test.json",
     deps = [
         ":build_webpack",

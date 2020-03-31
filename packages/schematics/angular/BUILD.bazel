@@ -57,6 +57,8 @@ ts_library(
             "*/other-files/**/*",
         ],
     ),
+    devmode_module = "commonjs",
+    devmode_target = "es2018",
     module_name = "@schematics/angular",
     deps = [
         "//packages/angular_devkit/core",
@@ -87,6 +89,8 @@ ts_library(
             "utility/test/**/*.ts",
         ],
     ),
+    devmode_module = "commonjs",
+    devmode_target = "es2018",
     # @external_begin
     tsconfig = "//:tsconfig-test.json",
     deps = [
