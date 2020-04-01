@@ -80,7 +80,9 @@ describe('Webpack Builder basic test', () => {
       await createArchitect(workspaceRoot);
     });
 
-    it('works', async () => {
+    // TODO(greg): this is the test that really matters because it uses both an internal
+    // package as a webpack loader+plugin, and webpack loaders from npm too.
+    fit('works', async () => {
       const run = await architect.scheduleTarget({ project: 'app', target: 'build-webpack' }, {}, {logger: createConsoleLogger()});
       const output = await run.result;
 

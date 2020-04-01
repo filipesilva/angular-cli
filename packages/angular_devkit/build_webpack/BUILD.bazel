@@ -100,6 +100,15 @@ ts_library(
     ],
 )
 
+
+# TODO(greg): this is the test, run it with 
+#   yarn bazel test //packages/angular_devkit/build_webpack:build_webpack_test
+# You should see the following error:
+#  ERROR in ../npm/node_modules/angular_cli/packages/angular_devkit/build_webpack/test/angular-app/src/main.ts
+#  Module build failed (from ./packages/ngtools/webpack/src/index.js):
+#  Error: Angular Compiler was detected but it was an instance of the wrong class.
+#  This likely means you have several @ngtools/webpack packages installed. You can check this with `npm ls @ngtools/  webpack`, and then remove the extra copies.
+#    at Object.ngcLoader (/home/filipesilva/.cache/bazel/_bazel_filipesilva/e327cb0949caea626cba080635966a9f/sandbox/linux-sandbox/153/execroot/angular_cli/bazel-out/k8-fastbuild/bin/packages/angular_devkit/build_webpack/build_webpack_test.sh.runfiles/angular_cli/packages/ngtools/webpack/src/loader.js:33:15)
 jasmine_node_test(
     name = "build_webpack_test",
     srcs = [":build_webpack_test_lib"],

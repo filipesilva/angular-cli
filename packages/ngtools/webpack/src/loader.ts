@@ -27,12 +27,14 @@ export function ngcLoader(this: loader.LoaderContext) {
 
   time(timeLabel);
 
-  const plugin = this._compilation._ngToolsWebpackPluginInstance;
+  const plugin: AngularCompilerPlugin & {done: PromiseLike<any>} = this._compilation._ngToolsWebpackPluginInstance;
   if (!plugin) {
     throw new Error('The AngularCompilerPlugin was not found. '
                   + 'The @ngtools/webpack loader requires the plugin.');
   }
 
+  // TODO(greg): if you comment this check, the test passes. But this check should generally work,
+  // we've been using it for a couple of years.
   // We must verify that the plugin is an instance of the right class.
   // Throw an error if it isn't, that often means multiple @ngtools/webpack installs.
   if (!(plugin instanceof AngularCompilerPlugin) || !plugin.done) {
