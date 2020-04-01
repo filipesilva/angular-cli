@@ -83,10 +83,20 @@ ts_library(
         "//packages/angular_devkit/architect/testing",
         "//packages/angular_devkit/core",
         "//packages/angular_devkit/core/node",
+        "//packages/ngtools/webpack",
+        "@npm//@angular/common",
+        "@npm//@angular/compiler",
+        "@npm//@angular/compiler-cli",
+        "@npm//@angular/core",
+        "@npm//@angular/platform-browser",
+        "@npm//@angular/platform-browser-dynamic",
         "@npm//@types/jasmine",
         "@npm//@types/node",
         "@npm//@types/node-fetch",
         "@npm//node-fetch",
+        "@npm//raw-loader",
+        "@npm//tslib",
+        "@npm//zone.js",
     ],
 )
 
@@ -97,6 +107,9 @@ jasmine_node_test(
         "@npm//jasmine",
         "@npm//source-map",
     ],
+    # Turns off nodejs require patches and turns on the linker, which sets up up node_modules 
+    # so that standard node module resolution work.
+    templated_args = ["--nobazel_patch_module_resolver"],
 )
 
 pkg_npm(

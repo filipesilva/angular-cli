@@ -9,7 +9,7 @@ import { Architect } from '@angular-devkit/architect';
 import { WorkspaceNodeModulesArchitectHost } from '@angular-devkit/architect/node';
 import { TestingArchitectHost } from '@angular-devkit/architect/testing';
 import { join, normalize, schema, workspaces } from '@angular-devkit/core';
-import { NodeJsSyncHost } from '@angular-devkit/core/node';
+import { NodeJsSyncHost, createConsoleLogger } from '@angular-devkit/core/node';
 import * as path from 'path';
 import { BuildResult } from './index';
 
@@ -65,6 +65,40 @@ describe('Webpack Builder basic test', () => {
         file: 'bundle.js',
         extension: '.js',
       });
+
+      await run.stop();
+    });
+  });
+
+  describe('Angular app', () => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 150000;
+    const ngJsonPath = path.join(path.dirname(__filename), '../../test/angular-app/angular.json');
+    const workspaceRoot = path.dirname(require.resolve(ngJsonPath));
+    const outputPath = join(normalize(workspaceRoot), 'dist');
+
+    beforeEach(async () => {
+      await createArchitect(workspaceRoot);
+    });
+
+    it('works', async () => {
+      const run = await architect.scheduleTarget({ project: 'app', target: 'build-webpack' }, {}, {logger: createConsoleLogger()});
+      const output = await run.result;
+
+      expect(output.success).toBe(true);
+      expect(await vfHost.exists(join(outputPath, 'main.js')).toPromise()).toBe(true);
+      expect(await vfHost.exists(join(outputPath, 'polyfills.js')).toPromise()).toBe(true);
+      await run.stop();
+    });
+
+    it('works and returns emitted files', async () => {
+      const run = await architect.scheduleTarget({ project: 'app', target: 'build-webpack' });
+      const output = await run.result as BuildResult;
+
+      expect(output.success).toBe(true);
+      expect(output.emittedFiles).toContain(
+        { id: 'main', name: 'main', initial: true, file: 'main.js', extension: '.js' },
+        { id: 'polyfills', name: 'polyfills', initial: true, file: 'polyfills.js', extension: '.js' },
+      );
 
       await run.stop();
     });

@@ -13,13 +13,13 @@
       "schematics": {},
       "targets": {
         "build-webpack": {
-          "builder": "@angular-devkit/build-webpack:webpack",
+          "builder": "../../:webpack",
           "options": {
             "webpackConfig": "webpack.config.js"
           }
         },
         "serve-webpack": {
-          "builder": "@angular-devkit/build-webpack:webpack-dev-server",
+          "builder": "../../:webpack-dev-server",
           "options": {
             "webpackConfig": "webpack.config.js"
           }

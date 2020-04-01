@@ -65,8 +65,12 @@
     ]
   },
   "devDependencies": {
+    "@angular/common": "9.1.0",
     "@angular/compiler": "9.1.0",
     "@angular/compiler-cli": "9.1.0",
+    "@angular/core": "9.1.0",
+    "@angular/platform-browser": "9.1.0",
+    "@angular/platform-browser-dynamic": "9.1.0",    
     "@angular/localize": "9.1.0",
     "@angular/service-worker": "9.1.0",
     "@babel/core": "7.8.6",
@@ -201,7 +205,9 @@
     "webpack-merge": "4.2.2",
     "webpack-sources": "1.4.3",
     "webpack-subresource-integrity": "1.4.0",
-    "worker-plugin": "3.2.0"
+    "worker-plugin": "3.2.0",
+    "tslib": "^1.11.1",
+    "zone.js": "^0.10.2"
   },
   "husky": {
     "hooks": {
