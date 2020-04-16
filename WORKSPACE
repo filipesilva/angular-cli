@@ -8,8 +8,8 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 http_archive(
     name = "build_bazel_rules_nodejs",
-    sha256 = "7b96a7ce4d40e57d629b435eb948d17037d0c346d5b27aecc55078291b75699b",
-    urls = ["https://github.com/aspect-dev/rules_nodejs-builds/raw/1.5.0+1361843f/build_bazel_rules_nodejs-labs-snapshot.tar.gz"],
+    sha256 = "f9e7b9f42ae202cc2d2ce6d698ccb49a9f7f7ea572a78fd451696d03ef2ee116",
+    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/1.6.0/rules_nodejs-1.6.0.tar.gz"],
 )
 
 # We use protocol buffers for the Build Event Protocol

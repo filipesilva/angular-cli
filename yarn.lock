@@ -910,28 +910,32 @@
   resolved "https://registry.yarnpkg.com/@bazel/hide-bazel-files/-/hide-bazel-files-1.5.0.tgz#130af9b62b47c1a2ebcf76cdbf4ba25fad9ccb0d"
   integrity sha512-Zo4eA/qpfnAqdDiXpE3LVla6NGJ0r5T69ZAlyQiLKgaiEbJquABWRjdhZvBB0wfZSkJfpwnR9HBIEAOmEItg+Q==
 
-"@bazel/jasmine@https://github.com/aspect-dev/rules_nodejs-builds/raw/1.5.0+1361843f/@bazel_jasmine-labs-snapshot.tar.gz":
-  version "1.5.0-32-g1361843"
-  resolved "https://github.com/aspect-dev/rules_nodejs-builds/raw/1.5.0+1361843f/@bazel_jasmine-labs-snapshot.tar.gz#9e7ba2e0090c9a51ee97164f657da9f1111138dd"
+"@bazel/jasmine@1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@bazel/jasmine/-/jasmine-1.6.0.tgz#c469ab8725d9a2e48c0c3c965861ff8add9272ac"
+  integrity sha512-WtOQDtIMHKTxlp0+FcdrADV6LMrpJV7eEGZippSNFPL5YhwwrPfCSOs5WkooatsrjL5YEszswzqQXFjvC7EZKQ==
   dependencies:
     jasmine "~3.5.0"
     jasmine-core "~3.5.0"
     jasmine-reporters "~2.3.2"
     v8-coverage "1.0.9"
 
-"@bazel/karma@https://github.com/aspect-dev/rules_nodejs-builds/raw/1.5.0+1361843f/@bazel_karma-labs-snapshot.tar.gz":
-  version "1.5.0-32-g1361843"
-  resolved "https://github.com/aspect-dev/rules_nodejs-builds/raw/1.5.0+1361843f/@bazel_karma-labs-snapshot.tar.gz#f3e90c2b7e4fa9e869d70b18d8564c12bc7b2e01"
+"@bazel/karma@1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@bazel/karma/-/karma-1.6.0.tgz#98950b71114dd9ec169e6778a35d31ae1f578655"
+  integrity sha512-9cX0E1SiMWwA70ZMFnMzeqSRn3biduGx03bGV77FSUYKocZpyfU2cOEygYGfxAqHnyM7x4cS8nflRv3+ZE0Aqg==
   dependencies:
     tmp "0.1.0"
 
-"@bazel/labs@https://github.com/aspect-dev/rules_nodejs-builds/raw/1.5.0+1361843f/@bazel_labs-labs-snapshot.tar.gz":
-  version "1.5.0-32-g1361843"
-  resolved "https://github.com/aspect-dev/rules_nodejs-builds/raw/1.5.0+1361843f/@bazel_labs-labs-snapshot.tar.gz#4a1973a22f9373613a9d3c86f7da968a6145a1ea"
+"@bazel/labs@1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@bazel/labs/-/labs-1.6.0.tgz#b3b2ac853143b14bce3349c8b105130b9b967bae"
+  integrity sha512-Pir3BhqAzlNNhwBCF3DguvhR0+S96OYXWc4Ha2m/0wm1/5G66bGB90CAKwahi52D8JGgg7PDwapCIPrD7ZGK9A==
 
-"@bazel/typescript@https://github.com/aspect-dev/rules_nodejs-builds/raw/1.5.0+1361843f/@bazel_typescript-labs-snapshot.tar.gz":
-  version "1.5.0-32-g1361843"
-  resolved "https://github.com/aspect-dev/rules_nodejs-builds/raw/1.5.0+1361843f/@bazel_typescript-labs-snapshot.tar.gz#6f6d9d8f09f1f943fbcf8566654867d5356fb014"
+"@bazel/typescript@1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-1.6.0.tgz#8dfd29e71bcf917d5f9cb67f19ac4dcfc9082439"
+  integrity sha512-vAKuwy1Hgl+t3M3sH/G0oqHRYN35TdENj+0lsCI3x7EbSzyI6cbA3YQrLrlyvdScksqOpZa3PZ3UBGqfJJq2DA==
   dependencies:
     protobufjs "6.8.8"
     semver "5.6.0"
@@ -10333,6 +10337,13 @@ rollup@2.2.0:
   optionalDependencies:
     fsevents "~2.1.2"
 
+rollup@2.3.4:
+  version "2.3.4"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.3.4.tgz#979e461f8cab1a71aec2d37ce2a434052ae70223"
+  integrity sha512-8U9x54RCVhrUEV1zon4Pp8kokg1HM0fwzf5vkwe2/rOfyTClarx5e27kFlaoZ7ofJiazWkNQ+dgdG4HuZxkQ9A==
+  optionalDependencies:
+    fsevents "~2.1.2"
+
 rollup@2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.6.1.tgz#8354e67caa7b8bf24c2488d9e2f64da2be62eebe"
@@ -10524,6 +10535,11 @@ semver@7.1.3, semver@^7.0.0, semver@^7.1.1:
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.1.3.tgz#e4345ce73071c53f336445cfc19efb1c311df2a6"
   integrity sha512-ekM0zfiA9SCBlsKa2X1hxyxiI4L3B6EbVJkkdgQXnSEEaHlGdvyodMruTiulSRWMMB4NeIuYNMC9rTKTz97GxA==
 
+semver@7.2.1, semver@^7.1.3:
+  version "7.2.1"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-7.2.1.tgz#d997aa36bdbb00b501ae4ac4c7d17e9f7a587ae5"
+  integrity sha512-aHhm1pD02jXXkyIpq25qBZjr3CQgg8KST8uX0OWXch3xE6jw+1bfbWnCjzMwojsTquroUmKFHNzU6x26mEiRxw==
+
 semver@7.3.2:
   version "7.3.2"
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.3.2.tgz#604962b052b81ed0786aae84389ffba70ffd3938"
@@ -10533,11 +10549,6 @@ semver@^6.0.0, semver@^6.2.0, semver@^6.3.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
   integrity sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==
-
-semver@^7.1.3:
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/semver/-/semver-7.2.1.tgz#d997aa36bdbb00b501ae4ac4c7d17e9f7a587ae5"
-  integrity sha512-aHhm1pD02jXXkyIpq25qBZjr3CQgg8KST8uX0OWXch3xE6jw+1bfbWnCjzMwojsTquroUmKFHNzU6x26mEiRxw==
 
 send@0.17.1:
   version "0.17.1"
