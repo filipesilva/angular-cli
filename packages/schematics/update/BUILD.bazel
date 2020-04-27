@@ -7,8 +7,8 @@ licenses(["notice"])  # MIT
 
 load("@bazel_tools//tools/build_defs/pkg:pkg.bzl", "pkg_tar")
 load("@npm_bazel_jasmine//:index.bzl", "jasmine_node_test")
-load("@npm_bazel_typescript//:index.bzl", "ts_library")
 load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
+load("//tools:defaults.bzl", "ts_library")
 load("//tools:ts_json_schema.bzl", "ts_json_schema")
 
 package(default_visibility = ["//visibility:public"])
@@ -25,8 +25,6 @@ ts_library(
         "//packages/schematics/update:update/schema.ts",
         "//packages/schematics/update:migrate/schema.ts",
     ],
-    devmode_module = "commonjs",
-    devmode_target = "es2018",
     deps = [
         "//packages/angular_devkit/core",
         "//packages/angular_devkit/schematics",
@@ -59,17 +57,12 @@ ts_library(
             "**/*.json",
         ],
     ),
-    devmode_module = "commonjs",
-    devmode_target = "es2018",
     # @external_begin
-    tsconfig = "//:tsconfig-test.json",
     deps = [
         ":update",
         "//packages/angular_devkit/core",
         "//packages/angular_devkit/schematics",
         "//packages/angular_devkit/schematics/testing",
-        "@npm//@types/jasmine",
-        "@npm//@types/node",
         "@npm//@types/semver",
         "@npm//@yarnpkg/lockfile",
         "@npm//ini",

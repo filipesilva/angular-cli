@@ -5,7 +5,7 @@
 
 licenses(["notice"])  # MIT
 
-load("@npm_bazel_typescript//:index.bzl", "ts_library")
+load("//tools:defaults.bzl", "ts_library")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -15,8 +15,6 @@ ts_library(
         include = ["**/*.ts"],
         exclude = ["**/*_spec.ts"],
     ),
-    devmode_module = "commonjs",
-    devmode_target = "es2018",
     module_name = "@angular-devkit/architect/testing",
     module_root = "index.d.ts",
     deps = [

@@ -6,10 +6,11 @@
 licenses(["notice"])  # MIT
 
 load("@bazel_tools//tools/build_defs/pkg:pkg.bzl", "pkg_tar")
-load("@npm_bazel_typescript//:index.bzl", "ts_library")
 load("@npm_bazel_jasmine//:index.bzl", "jasmine_node_test")
 load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
 load("//tools:ts_json_schema.bzl", "ts_json_schema")
+load("//tools:defaults.bzl", "ts_library")
+
 
 package(default_visibility = ["//visibility:public"])
 
@@ -45,8 +46,6 @@ ts_library(
         "**/*.json",
         "**/*.md",
     ]),
-    devmode_module = "commonjs",
-    devmode_target = "es2018",
     module_name = "@angular/cli",
     # strict_checks = False,
     deps = [
@@ -229,15 +228,10 @@ ts_library(
     name = "angular-cli_test_lib",
     testonly = True,
     srcs = glob(["**/*_spec.ts"]),
-    devmode_module = "commonjs",
-    devmode_target = "es2018",
     # strict_checks = False,
-    tsconfig = "//:tsconfig-test.json",
     deps = [
         ":angular-cli",
         "//packages/angular_devkit/core",
-        "@npm//@types/jasmine",
-        "@npm//@types/node",
     ],
 )
 

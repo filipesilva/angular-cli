@@ -7,8 +7,8 @@ licenses(["notice"])  # MIT
 
 load("@bazel_tools//tools/build_defs/pkg:pkg.bzl", "pkg_tar")
 load("@npm_bazel_jasmine//:index.bzl", "jasmine_node_test")
-load("@npm_bazel_typescript//:index.bzl", "ts_library")
 load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
+load("//tools:defaults.bzl", "ts_library")
 load("//tools:ts_json_schema.bzl", "ts_json_schema")
 
 package(default_visibility = ["//visibility:public"])
@@ -59,8 +59,6 @@ ts_library(
             "*/other-files/**/*",
         ],
     ),
-    devmode_module = "commonjs",
-    devmode_target = "es2018",
     module_name = "@schematics/angular",
     deps = [
         "//packages/angular_devkit/core",
@@ -91,10 +89,7 @@ ts_library(
             "utility/test/**/*.ts",
         ],
     ),
-    devmode_module = "commonjs",
-    devmode_target = "es2018",
     # @external_begin
-    tsconfig = "//:tsconfig-test.json",
     deps = [
         ":angular",
         "//packages/angular_devkit/core",
@@ -102,8 +97,8 @@ ts_library(
         "//packages/angular_devkit/schematics",
         "//packages/angular_devkit/schematics/testing",
         "//packages/schematics/angular/third_party/github.com/Microsoft/TypeScript",
-        "@npm//@types/jasmine",
-        "@npm//@types/node",
+        "@npm//@types/browserslist",
+        "@npm//@types/caniuse-lite",
         "@npm//rxjs",
         "@npm//tslint",
     ],

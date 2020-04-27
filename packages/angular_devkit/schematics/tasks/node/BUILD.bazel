@@ -4,9 +4,11 @@
 # found in the LICENSE file at https://angular.io/license
 package(default_visibility = ["//visibility:public"])
 
-load("@npm_bazel_typescript//:index.bzl", "ts_library")
+load("//tools:defaults.bzl", "ts_library")
 
 licenses(["notice"])
+
+package(default_visibility = ["//visibility:public"])
 
 ts_library(
     name = "node",
@@ -17,8 +19,6 @@ ts_library(
             "**/*_benchmark.ts",
         ],
     ),
-    devmode_module = "commonjs",
-    devmode_target = "es2018",
     module_name = "@angular-devkit/schematics/tasks/node",
     module_root = "index.d.ts",
     # The attribute below is needed in g3 to turn off strict typechecking
